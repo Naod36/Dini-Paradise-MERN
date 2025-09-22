@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import smallLogo from "../assets/smallLogo.png";
+import ShinyText from "./ShinyText";
 
 function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -52,24 +54,26 @@ function Header() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="flex items-center space-x-3"
             >
-              <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">DP</span>
-                </div>
+              <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
+                <img
+                  src={smallLogo}
+                  alt="Dini Paradise Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h1
-                  className="text-white text-2xl font-light tracking-wide"
+                  className="text-white tracking-wide font-marhey text-2xl font-semibold"
                   style={{ textShadow: "1px 1px 10px rgba(0,0,0,0.5)" }}
                 >
                   Dini Paradise
                 </h1>
-                <p
-                  className="text-white/70 text-sm tracking-wider"
-                  style={{ textShadow: "1px 1px 8px rgba(0,0,0,0.5)" }}
-                >
-                  A Culinary Journey
-                </p>
+                <ShinyText
+                  text="Cafe & Resturant"
+                  disabled={false}
+                  speed={3}
+                  className="custom-class"
+                />
               </div>
             </motion.div>
 

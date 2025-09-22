@@ -2,6 +2,10 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ImageWithFallback from "./figma/ImageWithFallback";
+import smallLogo from "../assets/smallLogo.png";
+import BlurText from "./BlurText";
+import ShinyText from "./ShinyText";
+import GradualBlur from "./GradualBlur";
 
 const heroImages = [
   {
@@ -28,6 +32,9 @@ function Hero() {
   const [nextIndex, setNextIndex] = useState(0);
   const [clickedThumbnailIndex, setClickedThumbnailIndex] = useState(null);
   const thumbnailRefs = useRef([]);
+  const handleAnimationComplete = () => {
+    console.log("Animation completed!");
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -145,6 +152,9 @@ function Hero() {
   };
 
   return (
+    //   <section style={{position: 'relative',height: 500,overflow: 'hidden'}}>
+    // <div style={{ height: '100%',overflowY: 'auto',padding: '6rem 2rem' }}>
+
     <div className="relative w-full h-screen overflow-hidden">
       {/* Base hero image */}
       <div className="absolute inset-0">
@@ -317,64 +327,99 @@ function Hero() {
       </motion.div>
 
       {/* Hero content */}
-      <div className="absolute inset-0 flex items-center justify-center z-20 pt-20">
+      <div className="absolute inset-0 flex items-center justify-center z-20 pt-20 px-8 md:-ml-20 ">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
-          className="text-center text-white px-8"
+          className="flex flex-col md:flex-row items-center md:items-center gap-8 text-center md:text-left"
         >
-          <motion.h2
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            className="text-3xl md:text-4xl lg:text-5xl mb-4 font-light tracking-wide"
-            style={{ textShadow: "2px 2px 20px rgba(0,0,0,0.7)" }}
-          >
-            Experience Fine Dining
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.4 }}
-            className="text-lg md:text-xl mb-8 text-white/90 max-w-2xl mx-auto"
-            style={{ textShadow: "1px 1px 10px rgba(0,0,0,0.7)" }}
-          >
-            Where every dish tells a story and every moment becomes a memory
-          </motion.p>
-
+          {/* Logo */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
+            className="w-40 md:w-72 flex-shrink-0"
           >
-            <motion.button
-              className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 30px rgba(245, 158, 11, 0.3)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Reserve a Table
-            </motion.button>
-
-            <motion.button
-              className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-3 rounded-full transition-all duration-300 backdrop-blur-sm"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 30px rgba(255, 255, 255, 0.2)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              View Menu
-            </motion.button>
+            <img
+              src={smallLogo}
+              alt="Dini Paradise Logo"
+              className="w-full h-auto object-contain"
+            />
           </motion.div>
+
+          {/* Text */}
+          <div className="flex flex-col items-center md:items-start">
+            <BlurText
+              text="Dini Paradise"
+              delay={250}
+              animateBy="words"
+              direction="bottom"
+              onAnimationComplete={handleAnimationComplete}
+              className="text-3xl md:text-4xl lg:text-6xl mb-1 font-marhey font-semibold tracking-wide text-white drop-shadow-[5px_5px_10px_rgba(0,0,0,1)]"
+            />
+            {/* <motion.h2
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.4 }}
+              className="text-3xl md:text-4xl lg:text-6xl mb-1 font-marhey font-semibold tracking-wide text-white"
+              style={{ textShadow: "5px 5px 2px rgba(0,0,0,1)" }}
+            >
+              Dini Paradise
+            </motion.h2> */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 2.5 }}
+              className="text-lg md:text-2xl mb-6 text-white/90 max-w-2xl"
+              style={{ textShadow: "1px 1px 10px rgba(0,0,0,0.7)" }}
+            >
+              A Culinary Journey
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.8 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+            >
+              <motion.button
+                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-0 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 30px rgba(245, 158, 11, 0.3)",
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View Menu
+              </motion.button>
+              <motion.button
+                className="border-2 border-white text-white  hover:bg-white hover:text-black px-8 py-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Gallery
+              </motion.button>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </div>
+    //       </div>
+
+    //   <GradualBlur
+    //     target="parent"
+    //     position="bottom"
+    //     height="6rem"
+    //     strength={2}
+    //     divCount={5}
+    //     curve="bezier"
+    //     exponential={true}
+    //     opacity={1}
+    //   />
+    // </section>
   );
 }
 
