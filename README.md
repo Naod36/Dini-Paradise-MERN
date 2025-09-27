@@ -115,7 +115,7 @@ The project uses a custom color palette defined in `client/tailwind.config.js`:
 - **Sans-serif**: Inter (for body text)
 - **Serif**: Playfair Display (for headings)
 
-### Content
+### Contentmongodb:
 
 Edit `client/src/App.jsx` to customize:
 
@@ -133,7 +133,9 @@ The application is configured to connect to MongoDB. To set up:
 
    ```env
    PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/dini-paradise
+   MONGODB_URI=mongodb+srv://naodk36_db_user:<db_password>@cluster0.wel508t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+
    NODE_ENV=development
    ```
 
