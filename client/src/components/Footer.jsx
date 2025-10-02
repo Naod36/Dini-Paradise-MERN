@@ -25,7 +25,7 @@ const FooterParticle = ({ delay = 0, size = "small" }) => {
 
   return (
     <motion.div
-      className={`absolute ${sizes[size]} bg-amber-400/20 rounded-full`}
+      className={`absolute ${sizes[size]} bg-amber-400/20 rounded-full `}
       initial={{
         opacity: 0,
         scale: 0,
@@ -35,7 +35,7 @@ const FooterParticle = ({ delay = 0, size = "small" }) => {
         y: Math.random() * 200 + 100,
       }}
       animate={{
-        opacity: [0, 0.4, 0],
+        opacity: [0, 1, 0],
         scale: [0, 1, 0],
         y: [0, -150],
         x: [0, Math.random() * 80 - 40],
@@ -57,6 +57,7 @@ const FooterFloatingIcon = ({
   x = 0,
   y = 0,
   size = "medium",
+  className = "z-50",
 }) => {
   const sizes = {
     small: "w-4 h-4",
@@ -140,7 +141,7 @@ function Footer() {
         {/* Main Background Image */}
         <motion.div
           style={{ y, opacity }}
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 -top-36 w-full h-full"
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -161,14 +162,14 @@ function Footer() {
         </motion.div>
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/40 to-black/90" />
 
         {/* Subtle Pattern Overlay */}
         <div
-          className="absolute inset-0 opacity-5"
+          className="absolute inset-0 opacity-15"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(245, 158, 11, 0.3) 1px, transparent 1px),
+              linear-gradient(rgba(245, 158, 11, 13) 1px, transparent 1px),
               linear-gradient(90deg, rgba(245, 158, 11, 0.3) 1px, transparent 1px)
             `,
             backgroundSize: "100px 100px",
@@ -181,6 +182,7 @@ function Footer() {
             key={`footer-particle-${i}`}
             delay={i * 1}
             size={i % 2 === 0 ? "small" : "medium"}
+            className="z-50"
           />
         ))}
 
@@ -199,6 +201,7 @@ function Footer() {
           x={200}
           y={150}
           size="large"
+          className="z-50"
         />
         <FooterFloatingIcon
           icon={
@@ -214,6 +217,7 @@ function Footer() {
           x={800}
           y={100}
           size="medium"
+          className="z-50"
         />
         <FooterFloatingIcon
           icon={
@@ -229,6 +233,7 @@ function Footer() {
           x={600}
           y={200}
           size="large"
+          className="z-50"
         />
       </div>
 
@@ -437,7 +442,7 @@ function Footer() {
           viewport={{ once: true }}
           className="border-t border-white/20 mt-12 pt-8"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center pb-10">
             <motion.p
               className="text-gray-400 text-sm"
               whileHover={{ scale: 1.02 }}

@@ -246,7 +246,7 @@ function Hero() {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.1, delay: 0.1 }}
-        className="absolute bottom-8 right-8 z-30"
+        className="absolute bottom-8 right-8 z-30 hidden sm:block"
         style={{ height: "280px", width: "120px" }}
       >
         <div className="relative h-full w-full flex items-center justify-center">
@@ -383,7 +383,7 @@ function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
             >
               <motion.button
-                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-0 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
+                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
                 whileHover={{
                   scale: 1.05,
                   boxShadow: "0 10px 30px rgba(245, 158, 11, 0.3)",
