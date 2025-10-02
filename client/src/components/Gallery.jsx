@@ -82,7 +82,7 @@ const Particle = ({ delay = 0, size = "small" }) => {
           200,
       }}
       animate={{
-        opacity: [0, 0.6, 0],
+        opacity: [0, 1, 0],
         scale: [0, 1, 0],
         y: [0, -200],
         x: [0, Math.random() * 100 - 50],
@@ -174,7 +174,7 @@ function Gallery() {
   // Parallax scroll effect
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.2, 0.1]);
+  const opacity = useTransform(scrollYProgress, [0, 5, 1], [0.3, 2, 0.1]);
 
   // Auto-play functionality
   useEffect(() => {
@@ -236,9 +236,9 @@ function Gallery() {
   };
 
   return (
-    <section className="relative py-20 bg-gradient-to-b from-gray-900 via-gray-800 to-black overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-b from-gray-900 via-gray-700 to-black overflow-hidden">
       {/* Restaurant Interior Background with Parallax */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 ">
         {/* Main Background Image */}
         <motion.div
           style={{ y, opacity }}
@@ -267,13 +267,13 @@ function Gallery() {
 
         {/* Subtle Grid Pattern Overlay */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-80"
           style={{
             backgroundImage: `
               linear-gradient(rgba(245, 158, 11, 0.2) 1px, transparent 1px),
               linear-gradient(90deg, rgba(245, 158, 11, 0.2) 1px, transparent 1px)
             `,
-            backgroundSize: "80px 80px",
+            backgroundSize: "100px 80px",
           }}
         />
 
@@ -401,7 +401,7 @@ function Gallery() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Content Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <div className="absolute top-0 left-0 right-0 p-8 text-white">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
