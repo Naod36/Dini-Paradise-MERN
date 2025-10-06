@@ -6,6 +6,7 @@ import smallLogo from "../assets/smallLogo.png";
 import BlurText from "./BlurText";
 import ShinyText from "./ShinyText";
 import GradualBlur from "./GradualBlur";
+import { useNavigate } from "react-router-dom";
 
 const heroImages = [
   {
@@ -35,6 +36,7 @@ function Hero() {
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
   };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -389,9 +391,11 @@ function Hero() {
                   boxShadow: "0 10px 30px rgba(245, 158, 11, 0.3)",
                 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => navigate("/itemMenu")}
               >
                 View Menu
               </motion.button>
+
               <motion.button
                 className="border-2 border-white text-white  hover:bg-white hover:text-black px-8 py-3 rounded-full transition-all duration-300 backdrop-blur-sm"
                 whileHover={{

@@ -76,6 +76,7 @@ export default function NavbarDemo() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 variant="primary"
                 className="w-full"
+                href="/itemMenu"
               >
                 View Menu
               </NavbarButton>
