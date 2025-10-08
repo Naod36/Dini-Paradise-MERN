@@ -16,16 +16,16 @@ function ContactUs() {
   return (
     <section className="relative py-16 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       {/* Animated gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-200 via-amber-200 to-pink-200 animate-gradient opacity-40"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-200 via-amber-200 to-pink-200 animate-gradient opacity-90"></div>
 
       {/* Floating circles */}
-      <div className="absolute -top-10 -left-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-      <div className="absolute top-20 -right-10 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-200"></div>
-      <div className="absolute -bottom-16 left-1/2 w-72 h-72 bg-amber-600 rounded-full mix-blend-multiply filter blur-lg opacity-30 animate-blob animation-delay-400"></div>
+      {/* <div className="absolute -top-10 -left-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob"></div> */}
+      <div className="absolute -top-20 -right-10 w-72 h-72 bg-pink-500 rounded-full filter blur-3xl  opacity-30 animate-blob animation-delay-5"></div>
+      <div className="absolute -bottom-16 left-1/2 w-72 h-72 bg-amber-600 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animation-delay-4"></div>
 
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-20 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 150 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
