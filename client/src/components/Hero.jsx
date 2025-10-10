@@ -154,10 +154,7 @@ function Hero() {
   };
 
   return (
-    //   <section style={{position: 'relative',height: 500,overflow: 'hidden'}}>
-    // <div style={{ height: '100%',overflowY: 'auto',padding: '6rem 2rem' }}>
-
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden bg-transparent">
       {/* Base hero image */}
       <div className="absolute inset-0">
         <ImageWithFallback

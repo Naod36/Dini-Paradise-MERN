@@ -5,7 +5,7 @@ import NavbarDemo from "./Navbar";
 
 function Layout({ children }) {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       <NavbarDemo />
       <main>{children}</main>
       <Footer />

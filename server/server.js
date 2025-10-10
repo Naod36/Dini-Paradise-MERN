@@ -31,6 +31,8 @@ app.get("/", (req, res) => {
     status: "Server is running successfully",
   });
 });
+// Define Routes
+app.use("/api/images", require("./routes/imageRoutes"));
 
 // Health check route
 app.get("/health", (req, res) => {

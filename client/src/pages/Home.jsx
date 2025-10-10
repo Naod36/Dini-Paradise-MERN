@@ -11,37 +11,15 @@ function Home() {
       <div>
         <Hero />
         <AboutPreview />
+
+        {/* The Gallery component is now self-sufficient! */}
         <Gallery
-         backgroundImage={"/abstract-geometric-pattern.png"}
-        images={[
-          {
-            src: "/modern-architecture-cityscape.png",
-            name: "Modern Architecture",
-            description: "Contemporary urban design showcasing innovative building structures",
-            alt: "Modern architecture cityscape",
-          },
-          {
-            src: "/serene-mountain-lake.png",
-            name: "Mountain Serenity",
-            description: "Peaceful alpine lake surrounded by majestic peaks",
-            alt: "Serene mountain lake",
-          },
-          {
-            src: "/vibrant-urban-cityscape.png",
-            name: "Urban Energy",
-            description: "Dynamic city life captured in vibrant colors and movement",
-            alt: "Vibrant urban cityscape",
-          },
-          {
-            src: "/minimalist-design.png",
-            name: "Minimalist Elegance",
-            description: "Clean lines and simplicity in modern design aesthetics",
-            alt: "Minimalist design",
-          },
-        ]}
-        rotationInterval={4000}
-        
+          backgroundImage={
+            "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+          }
+          rotationInterval={8000}
         />
+
         <ContactUs />
         <GradualBlur
           position="bottom"
