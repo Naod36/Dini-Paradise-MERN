@@ -48,6 +48,8 @@ interface MobileNavHeaderProps {
 interface MobileNavMenuProps {
   children: React.ReactNode;
   className?: string;
+  isvisible?: boolean;
+
   isOpen: boolean;
   onClose: () => void;
 }
@@ -99,7 +101,7 @@ export const NavBody = ({ children, className, isvisible }: NavBodyProps) => {
   return (
     <motion.div
       animate={{
-        backdropFilter: isvisible ? "blur(10px)" : "blur(10px)",
+        backdropFilter: isvisible ? "blur(10px)" : "blur(30px)",
         boxShadow: isvisible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
@@ -116,7 +118,9 @@ export const NavBody = ({ children, className, isvisible }: NavBodyProps) => {
       }}
       className={cn(
         "relative z-[60]  mx-auto  hidden w-full max-w-full flex-row items-center justify-between self-start px-4 py-2 lg:flex dark:bg-transparent ",
-        isvisible ? " bg-white/30 dark:bg-neutral-900/80" : " bg-black/40",
+        isvisible
+          ? "rounded-3xl bg-white/50 dark:bg-neutral-900/80"
+          : " bg-black/40",
         className
       )}
     >
@@ -185,14 +189,14 @@ export const MobileNav = ({
   return (
     <motion.div
       animate={{
-        backdropFilter: isvisible ? "blur(10px)" : "none",
+        backdropFilter: isvisible ? "blur(10px)" : "blur(10px)",
         boxShadow: isvisible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
         width: isvisible ? "90%" : "100%",
-        paddingRight: isvisible ? "12px" : "0px",
-        paddingLeft: isvisible ? "12px" : "0px",
-        borderRadius: isvisible ? "10px" : "2rem",
+        paddingRight: isvisible ? "10px" : "0px",
+        paddingLeft: isvisible ? "10px" : "0px",
+        borderRadius: isvisible ? "50px" : "0px",
         y: isvisible ? 20 : 0,
       }}
       transition={{
@@ -201,10 +205,8 @@ export const MobileNav = ({
         damping: 30,
       }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col rounded-lg items-center justify-between px-0 py-2 lg:hidden",
-        isvisible
-          ? "bg-white/80 text-black/80 dark:bg-neutral-950/80"
-          : " bg-black/30",
+        "relative z-50 mx-auto flex w-full flex-col items-center justify-between px-0 py-2 lg:hidden",
+        isvisible ? "bg-white/50  dark:bg-neutral-950/80" : " bg-black/60",
         className
       )}
     >
@@ -248,6 +250,8 @@ export const MobileNavMenu = ({
   children,
   className,
   isOpen,
+  isvisible,
+
   onClose,
 }: MobileNavMenuProps) => {
   return (
@@ -255,10 +259,22 @@ export const MobileNavMenu = ({
       {isOpen && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          animate={{
+            // backdropFilter: isvisible ? "blur(10px)" : "blur(10px)",
+
+            boxShadow: isvisible
+              ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
+              : "none",
+
+            borderRadius: isvisible ? "5px 5px 30px 30px" : "0px",
+            opacity: 1,
+          }}
           className={cn(
-            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 bg-white px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] dark:bg-neutral-950",
+            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-center justify-center gap-4  px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] dark:bg-neutral-950",
+            isvisible
+              ? "bg-white/60 text-black/90 dark:bg-neutral-950/80"
+              : " bg-black/80 text-white/90",
             className
           )}
         >
@@ -271,15 +287,21 @@ export const MobileNavMenu = ({
 
 export const MobileNavToggle = ({
   isOpen,
+  isvisible,
   onClick,
 }: {
   isOpen: boolean;
   onClick: () => void;
+  isvisible?: boolean;
 }) => {
+  const colorClasses = isvisible
+    ? "text-black dark:text-white"
+    : "text-white dark:text-black";
+
   return isOpen ? (
-    <IconX className="mr-3 text-black dark:text-white" onClick={onClick} />
+    <IconX className={cn("mr-3", colorClasses)} onClick={onClick} />
   ) : (
-    <IconMenu2 className="mr-3 text-black dark:text-white" onClick={onClick} />
+    <IconMenu2 className={cn("mr-3", colorClasses)} onClick={onClick} />
   );
 };
 

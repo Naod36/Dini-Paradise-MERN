@@ -8,7 +8,11 @@
 
 @layer base {
   body {
-    @apply font-sans text-gray-900 bg-white;
+    @apply font-sans text-gray-900 bg-transparent;
+  }
+  #root {
+    /* 💥 ADD THIS RULE: Force the React root element to be transparent */
+    background-color: transparent;
   }
 
   h1,
@@ -126,6 +130,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-transparent text-foreground;
+  }
+  #root {
+    /* 💥 ADD THIS RULE: Force the React root element to be transparent */
+    background-color: transparent;
   }
 }

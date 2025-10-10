@@ -40,7 +40,7 @@ function AppWrapper() {
       {loading && location.pathname === "/" && <Preloader />}
 
       <div
-        className={`transition-opacity duration-1000 ${
+        className={`transition-opacity duration-1000 bg-transparent ${
           showContent ? "opacity-100" : "opacity-0"
         }`}
       >
