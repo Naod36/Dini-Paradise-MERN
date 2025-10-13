@@ -1,152 +1,58 @@
-import { useState, useRef } from "react"; // 1. Import useRef
+import { useState, useRef, useEffect } from "react"; // 1. Import useRef
 import { ChevronLeft, ChevronRight } from "@deemlol/next-icons";
 // 2. Import the custom hook
 import { useHorizontalScroll } from "../script/useHorizontalScroll";
-
-const menuItems = [
-  {
-    id: 1,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 2,
-    name: "Spaghetti Carbonara",
-    category: "Pasta",
-    price: 10.99,
-    description: "Classic Roman dish with eggs, cheese, pancetta, and pepper.",
-    image: "https://via.placeholder.com/400x250?text=Carbonara",
-    popular: false,
-  },
-  {
-    id: 3,
-    name: "Margherita Pizza",
-    category: "Pizza",
-    price: 8.99,
-    description: "Tomato, mozzarella, and fresh basil.",
-    image: "https://via.placeholder.com/400x250?text=Margherita",
-    popular: true,
-  },
-  {
-    id: 4,
-    name: "Pepperoni Pizza",
-    category: "Pizza",
-    price: 9.99,
-    description: "Topped with mozzarella and spicy pepperoni.",
-    image: "https://via.placeholder.com/400x250?text=Pepperoni",
-    popular: false,
-  },
-  {
-    id: 5,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 6,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 7,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 8,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 9,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 10,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 11,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 12,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 13,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
-  {
-    id: 14,
-    name: "Lasagna",
-    category: "Pasta",
-    price: 12.99,
-    description: "Layers of pasta, cheese, and rich tomato sauce.",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZm9vZCUyMHBsYXRpbmclMjBnb3VybWV0fGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    popular: true,
-  },
+import ImageWithFallback from "../components/figma/ImageWithFallback";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+const background = [
+  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwcmVzdGF1cmFudCUyMGludGVyaW9yfGVufDF8fHx8MTc1ODEzMTg0OXww&ixlib=rb-4.1.0&q=80&w=1920&utm_source=figma&utm_medium=referral",
 ];
 
 export default function ItemMenu() {
+  // --- STATE MANAGEMENT ---
+  const [menuItems, setMenuItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const scrollRef = useHorizontalScroll(40, !isLoading);
+  // --- DATA FETCHING ---
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        // Fetch from your new API endpoint!
+        const response = await fetch("http://localhost:5000/api/menu-items");
+        if (!response.ok) {
+          throw new Error("Failed to fetch menu data.");
+        }
+        const data = await response.json();
+        setMenuItems(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMenuItems();
+  }, []); // Empty array means this effect runs once when the component mounts
+
+  // --- RENDER LOGIC ---
+  if (isLoading) {
+    return <div className="text-center mt-48">Loading menu...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-48 text-red-500">Error: {error}</div>;
+  }
 
   const categories = [
     "All",
@@ -162,9 +68,7 @@ export default function ItemMenu() {
     return matchesSearch && matchesCategory;
   });
 
-  const popularItems = menuItems.filter((item) => item.popular);
-
-  const scrollRef = useHorizontalScroll(40);
+  const popularItems = menuItems.filter((item) => item.isPopular);
 
   // Also, use the scrollRef for the navigation buttons
   // Note: We don't need a separate ref, the one from the hook is sufficient
@@ -184,96 +88,158 @@ export default function ItemMenu() {
       scrollRef.current.scrollLeft += 500;
     }
   };
+
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      {/* Search Bar */}
-      <div className="mt-24">
-        {" "}
-        {/* pushes below navbar */}
-        <input
-          type="text"
-          placeholder="Search food..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-3 border rounded-lg mb-6 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
-        />
-      </div>
+    // 1. MAIN WRAPPER: Make it 'relative' to contain the absolute children.
+    // We'll add a base dark color and ensure it takes at least the full screen height.
+    // 'overflow-hidden' is good practice to contain the animated blobs.
+    <div className="">
+      {/* 2. BACKGROUND LAYER: Positioned absolutely to fill the parent. */}
+      {/* 'z-0' places this layer at the very back. */}
+      <div className="relative w-full h-auto bg-gradient-to-t from-orange-800 via-orange-600 to-orange-300">
+        <div className="absolute  inset-0 ">
+          <motion.div className="absolute inset-0 top-6 w-full h-auto">
+            <AnimatePresence mode="wait">
+              <motion.div
+                // key={}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 3, ease: "easeInOut" }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <ImageWithFallback
+                  src={background}
+                  alt="Restaurant Interior"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+          {/* --- Paste All Your Background Elements Here --- */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-black/30" />
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
 
-      {/* Category Buttons */}
-      <div className="flex flex-wrap gap-3 mb-8">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-full border transition-all ${
-              selectedCategory === cat
-                ? "bg-amber-500 text-white shadow-md"
-                : "bg-gray-100 hover:bg-amber-100"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Popular Items Scroll */}
-      <h2 className="text-xl font-semibold mb-4">Popular</h2>
-      <div className="relative flex items-center">
-        <button
-          onClick={slideLeft}
-          className="absolute left-0 z-10 p-3 bg-white rounded-full shadow-lg opacity-50 transition-opacity hover:opacity-100 hidden md:block" // Style for button
-        >
-          <ChevronLeft size={30} className="text-amber-500" />
-        </button>
-
-        <div
-          // 3. Attach the ref from the custom hook and buttons logic
-          ref={scrollRef}
-          // Removed the `id="slider"` since we are using a ref now.
-          // Note: `scroll` class is not a standard Tailwind class,
-          // `overflow-x-auto` or `overflow-x-scroll` are correct.
-          className="flex overflow-x-auto whitespace-nowrap scroll-smooth scrollbar-hide gap-4 mb-10 pb-2 w-full"
-        >
-          {popularItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setSelectedItem(item)}
-              className="min-w-[160px] bg-white  rounded-lg shadow cursor-pointer hover:scale-105 transition-transform duration-300"
+        {/* 3. CONTENT LAYER: Positioned relatively with a higher z-index. */}
+        {/* 'z-10' places this layer on top of the background (z-0). */}
+        {/* I've added a text color class for readability against the dark background. */}
+        <div className="relative z-10 p-6 max-w-6xl mx-auto text-gray-200">
+          {/* --- All Your Original Content Goes Here --- */}
+          {/* Popular Items Scroll */}
+          <h2 className="text-xl font-semibold mb-4 text-white">Popular</h2>
+          <div className="relative flex items-center">
+            <button
+              onClick={slideLeft}
+              // Adjusted button style for dark mode
+              className="absolute left-1/3 -bottom-7 transform -translate-y-1/2 z-10 bg-black/60 backdrop-blur-md hover:bg-black/80 transition-all duration-300 rounded-full p-3 group border border-white/30 hover:border-amber-500/50 shadow-lg"
             >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-28 object-cover rounded-t-lg"
-              />
-              <div className="p-2">
-                <p className="font-semibold text-sm">{item.name}</p>
-                <p className="text-amber-600 font-bold text-sm">
-                  ${item.price.toFixed(2)}
-                </p>
-              </div>
+              <svg
+                className="w-4 h-4 text-white group-hover:text-amber-400 group-hover:scale-110 transition-all"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>{" "}
+            </button>
+            <button
+              onClick={slideRight}
+              // Adjusted button style for dark mode
+              className="absolute right-1/3 -bottom-7 transform -translate-y-1/2 z-10 bg-black/60 backdrop-blur-md hover:bg-black/80 transition-all duration-300 rounded-full p-3 group border border-white/30 hover:border-amber-500/50 shadow-lg"
+            >
+              <svg
+                className="w-4 h-4 text-white group-hover:text-amber-400 group-hover:scale-110 transition-all"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>{" "}
+            </button>
+
+            <div
+              ref={scrollRef}
+              className="mt-12 flex overflow-x-auto whitespace-nowrap scroll-smooth scrollbar-hide gap-4 mb-10 pb-2 w-full"
+            >
+              {popularItems.map((item) => (
+                <div
+                  key={item._id}
+                  onClick={() => setSelectedItem(item)}
+                  // Adjusted card style for dark mode
+                  className="min-w-[160px] bg-gray-800 text-white rounded-lg shadow cursor-pointer hover:scale-105 transition-transform duration-300"
+                >
+                  <img
+                    src={item.image.src}
+                    alt={item.image.alt}
+                    className="w-full h-28 object-cover rounded-t-lg"
+                  />
+                  <div className="p-2">
+                    <p className="font-semibold text-sm">{item.name}</p>
+                    <p className="text-amber-500 font-bold text-sm">
+                      Birr {item.price.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
+        </div>
+      </div>
+      {/* Search Bar */}
+      <div className="flex flex-col items-center">
+        <div className="mt-6 w-full max-w-lg ">
+          {/* pushes below navbar */}
+          <input
+            type="text"
+            placeholder="Search food..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            // Adjusted input style for dark mode
+            className="w-full p-3 border border-gray-600 bg-gray-800 text-white rounded-lg mb-6 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+
+        {/* Category Buttons */}
+        <div className="flex flex-wrap gap-3 mb-8 justify-center max-w-full">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              // Adjusted button styles for dark mode
+              className={`px-4 py-2 rounded-full border border-gray-600 transition-all ${
+                selectedCategory === cat
+                  ? "bg-amber-500 text-white shadow-md"
+                  : "bg-gray-700 hover:bg-amber-600/50"
+              }`}
+            >
+              {cat}
+            </button>
           ))}
         </div>
-        {/* Right Chevron Button */}
-        <button
-          onClick={slideRight}
-          className="absolute right-0 z-10 p-3 bg-white rounded-full shadow-lg opacity-50 transition-opacity hover:opacity-100 hidden md:block" // Style for button
-        >
-          <ChevronRight size={30} className="text-amber-500" />
-        </button>
       </div>
 
       {/* All Items Grid */}
-      <h2 className="text-xl font-semibold mb-4">All Items</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <h2 className="text-xl font-semibold p-6 mb-4">All Items</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-8">
         {filteredItems.map((item) => (
           <div
-            key={item.id}
+            key={item._id}
             onClick={() => setSelectedItem(item)}
             className="relative group rounded-xl overflow-hidden shadow-lg bg-white cursor-pointer"
           >
             <img
-              src={item.image}
+              src={item.image.src}
               alt={item.name}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />

@@ -2,14 +2,22 @@
 
 import { useRef, useEffect } from "react";
 
-// Accept a multiplier prop
-export function useHorizontalScroll(speedMultiplier = 2) {
+// The only way to fix this without external state is to
+// make the hook's useEffect dependent on the element itself,
+// but since the element is not state/props, we use an external flag.
+
+export function useHorizontalScroll(speedMultiplier = 2, contentLoaded = true) {
+  // <--- ADD A FLAG
   const elRef = useRef(null);
 
   useEffect(() => {
+    // We only proceed if contentLoaded is true (i.e., isLoading is false)
+    if (!contentLoaded) return;
+
     const el = elRef.current;
 
     if (el) {
+      // ... your event listener setup ...
       const onWheel = (e) => {
         if (e.deltaY === 0) return;
 
@@ -24,13 +32,13 @@ export function useHorizontalScroll(speedMultiplier = 2) {
         });
       };
 
-      el.addEventListener("wheel", onWheel);
+      el.addEventListener("wheel", onWheel, { passive: false });
 
       return () => {
-        el.removeEventListener("wheel", onWheel);
+        el.removeEventListener("wheel", onWheel, { passive: false });
       };
     }
-  }, [speedMultiplier]); // IMPORTANT: Add speedMultiplier to dependency array
+  }, [speedMultiplier, contentLoaded]); // <--- ADD contentLoaded to dependencies
 
   return elRef;
 }
