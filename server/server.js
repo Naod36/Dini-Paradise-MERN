@@ -33,8 +33,8 @@ app.get("/", (req, res) => {
 });
 // Define Routes
 app.use("/api/images", require("./routes/imageRoutes"));
-
-// Health check route
+app.use("/api/menu-items", require("./routes/menuItemRoutes"));
+app.use("/api/site-assets", require("./routes/siteAssetRoutes"));
 app.get("/health", (req, res) => {
   res.json({
     status: "OK",
