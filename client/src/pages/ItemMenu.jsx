@@ -29,7 +29,9 @@ export default function ItemMenu() {
     const fetchMenuItems = async () => {
       try {
         // Fetch from your new API endpoint!
-        const response = await fetch("http://localhost:5000/api/menu-items");
+        const response = await fetch(
+          "https://dini-paradise-backend-akz8.onrender.com/api/menu-items"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch menu data.");
         }
