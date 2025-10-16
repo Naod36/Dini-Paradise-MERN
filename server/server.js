@@ -5,6 +5,10 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://dini-paradise-frontend.onrender.com",
+];
 
 // Middleware
 app.use(cors());
@@ -16,7 +20,8 @@ const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/dini-paradise";
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 10000 })
+
   .then(() => {
     console.log("Connected to MongoDB successfully");
   })

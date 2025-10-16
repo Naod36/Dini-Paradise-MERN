@@ -11,7 +11,7 @@ import {
   MobileNavMenu,
 } from "./ui/resizable-navbar";
 import { useState } from "react";
-
+import { useLocation } from "react-router-dom";
 export default function NavbarDemo() {
   const navItems = [
     {
@@ -33,7 +33,9 @@ export default function NavbarDemo() {
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
+  const shouldHideButton = location.pathname === "/itemMenu";
   return (
     <div className="relative w-full">
       <Navbar>
@@ -41,10 +43,14 @@ export default function NavbarDemo() {
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
-          {/* <div className="flex items-center gap-4"> */}
-          {/* <NavbarButton variant="secondary">Login</NavbarButton> */}
-          <NavbarButton variant="primary">View Menu</NavbarButton>
-          {/* </div> */}
+          {/* 4. Conditionally render the Desktop button */}
+          {!shouldHideButton && (
+            // NOTE: In RRD, you should ideally use <Link> for navigation,
+            // but keeping 'href' if NavbarButton handles it internally
+            <NavbarButton variant="primary" href="/itemMenu">
+              View Menu
+            </NavbarButton>
+          )}
         </NavBody>
 
         {/* Mobile Navigation */}
