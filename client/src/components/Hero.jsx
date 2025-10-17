@@ -8,24 +8,8 @@ import ShinyText from "./ShinyText";
 import GradualBlur from "./GradualBlur";
 import { useNavigate } from "react-router-dom";
 
-const heroImages = [
-  {
-    url: "https://images.unsplash.com/photo-1743793055911-52e19beba5d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwcmVzdGF1cmFudCUyMGludGVyaW9yJTIwZGluaW5nfGVufDF8fHx8MTc1ODEzMTg0OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    alt: "Elegant restaurant interior",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1750943024048-a4c9912b1425?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb3VybWV0JTIwZm9vZCUyMHBsYXRpbmclMjBmaW5lJTIwZGluaW5nfGVufDF8fHx8MTc1ODE2NjY3Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    alt: "Gourmet food plating",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1717838206417-c4fe2b9fb043?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZXN0YXVyYW50JTIwa2l0Y2hlbiUyMGNoZWYlMjBjb29raW5nfGVufDF8fHx8MTc1ODE2Njg5NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    alt: "Chef cooking in restaurant kitchen",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1689251546710-bf15f2b81c6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWwlMjByZXN0YXVyYW50JTIwdGVycmFjZSUyMG91dGRvb3IlMjBkaW5pbmd8ZW58MXx8fHwxNzU4MjI2MTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    alt: "Beautiful restaurant terrace",
-  },
-];
+const API_URL =
+  "https://dini-paradise-backend-akz8.onrender.com/api/site-assets";
 
 function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,8 +21,53 @@ function Hero() {
     console.log("Animation completed!");
   };
   const navigate = useNavigate();
+  const [heroImages, setHeroImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchHeroAssets = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // 1. Fetch assets for the 'home' page
+        const response = await fetch(`${API_URL}/page/home`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // 2. Parse the JSON response
+        const data = await response.json();
+
+        // 3. Map the fetched data structure to what your component expects
+        const formattedImages = data.map((asset) => ({
+          url: asset.src,
+          alt: asset.alt,
+          // key: asset.key,
+        }));
+
+        setHeroImages(formattedImages);
+      } catch (err) {
+        console.error("Failed to fetch hero assets:", err);
+        setError(
+          `Failed to load hero images. Please ensure the backend is running and the URL is correct. Error: ${err.message}`
+        );
+        setHeroImages([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHeroAssets();
+  }, []);
+  // Empty dependency array means this runs once on mount
+
+  // ---------------------------------------------
+
+  useEffect(() => {
+    if (heroImages.length === 0) return;
     const timer = setInterval(() => {
       if (!isChanging) {
         const next = (currentIndex + 1) % heroImages.length;
@@ -55,7 +84,31 @@ function Hero() {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [currentIndex, isChanging]);
+  }, [currentIndex, isChanging, heroImages.length]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[50vh] text-xl font-semibold text-gray-700 bg-gray-100">
+        Loading beautiful assets...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-[50vh] text-red-500 font-semibold text-center p-4 bg-red-50/50">
+        Error: {error}
+      </div>
+    );
+  }
+
+  if (heroImages.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-[50vh] text-gray-500 font-medium text-center p-4 bg-gray-100">
+        No hero images found. Please upload assets for the 'home' page.
+      </div>
+    );
+  }
 
   const handleThumbnailClick = (index) => {
     if (index !== currentIndex && !isChanging) {
@@ -70,37 +123,6 @@ function Hero() {
       }, 1400);
     }
   };
-
-  //   const nextSlide = () => {
-  //     if (!isChanging) {
-  //       const next = (currentIndex + 1) % heroImages.length;
-  //       setNextIndex(next);
-  //       setClickedThumbnailIndex(next);
-  //       setIsChanging(true);
-
-  //       setTimeout(() => {
-  //         setCurrentIndex(next);
-  //         setIsChanging(false);
-  //         setClickedThumbnailIndex(null);
-  //       }, 1400);
-  //     }
-  //   };
-
-  //   const prevSlide = () => {
-  //     if (!isChanging) {
-  //       const next =
-  //         currentIndex === 0 ? heroImages.length - 1 : currentIndex - 1;
-  //       setNextIndex(next);
-  //       setClickedThumbnailIndex(next);
-  //       setIsChanging(true);
-
-  //       setTimeout(() => {
-  //         setCurrentIndex(next);
-  //         setIsChanging(false);
-  //         setClickedThumbnailIndex(null);
-  //       }, 1400);
-  //     }
-  //   };
 
   const getThumbnailProperties = (index) => {
     let relativePos = index - currentIndex;
