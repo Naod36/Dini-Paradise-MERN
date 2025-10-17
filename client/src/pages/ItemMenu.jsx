@@ -9,10 +9,11 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-const background = [
-  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwcmVzdGF1cmFudCUyMGludGVyaW9yfGVufDF8fHx8MTc1ODEzMTg0OXww&ixlib=rb-4.1.0&q=80&w=1920&utm_source=figma&utm_medium=referral",
-];
-
+// const background = [
+//   "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwcmVzdGF1cmFudCUyMGludGVyaW9yfGVufDF8fHx8MTc1ODEzMTg0OXww&ixlib=rb-4.1.0&q=80&w=1920&utm_source=figma&utm_medium=referral",
+// ];
+const API_URL =
+  "https://dini-paradise-backend-akz8.onrender.com/api/site-assets";
 export default function ItemMenu() {
   // --- STATE MANAGEMENT ---
   const [menuItems, setMenuItems] = useState([]);
@@ -24,6 +25,47 @@ export default function ItemMenu() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const scrollRef = useHorizontalScroll(40, !isLoading);
+  const [background, setBackground] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBgAssets = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // 1. Fetch assets for the 'home' page
+        const response = await fetch(`${API_URL}/page/itemMenu`);
+        console.log(response);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // 2. Parse the JSON response
+        const data = await response.json();
+
+        // 3. Map the fetched data structure to what your component expects
+        const formattedImages = data.map((asset) => ({
+          url: asset.src,
+          alt: asset.alt,
+          // key: asset.key,
+        }));
+
+        setBackground(formattedImages);
+      } catch (err) {
+        console.error("Failed to fetch hero assets:", err);
+        setError(
+          `Failed to load hero images. Please ensure the backend is running and the URL is correct. Error: ${err.message}`
+        );
+        setBackground([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBgAssets();
+  }, []);
+
   // --- DATA FETCHING ---
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -46,7 +88,13 @@ export default function ItemMenu() {
 
     fetchMenuItems();
   }, []); // Empty array means this effect runs once when the component mounts
-
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[50vh] text-xl font-semibold text-gray-700 bg-gray-100">
+        Loading beautiful assets...
+      </div>
+    );
+  }
   // --- RENDER LOGIC ---
   if (isLoading) {
     return <div className="text-center mt-48">Loading menu...</div>;
