@@ -15,8 +15,7 @@ router.post("/login", async (req, res) => {
 
   try {
     // 1. Check if the user exists (and ensure they have the 'admin' role)
-    let user = await User.findOne({ email });
-
+    let user = await User.findOne({ email }).select("+password");
     // Basic check: If you are only supporting one admin, you can simplify this.
     if (!user || user.role !== "admin") {
       return res
