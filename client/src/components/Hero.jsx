@@ -33,6 +33,7 @@ function Hero() {
 
         // 1. Fetch assets for the 'home' page
         const response = await fetch(`${API_URL}/page/home`);
+        console.log(response);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -40,7 +41,7 @@ function Hero() {
 
         // 2. Parse the JSON response
         const data = await response.json();
-
+        console.log(data);
         // 3. Map the fetched data structure to what your component expects
         const formattedImages = data.map((asset) => ({
           url: asset.src,
