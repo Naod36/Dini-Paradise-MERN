@@ -13,6 +13,7 @@ dist-ssr
 seed.js
 testdb.js
 *.local
+server/.env
 
 # Editor directories and files
 .vscode/*
