@@ -20,7 +20,7 @@ const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/dini-paradise";
 
 mongoose
-  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 10000 })
+  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 20000 })
 
   .then(() => {
     console.log("Connected to MongoDB successfully");
@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 });
 // Define Routes
 app.use("/api/auth", require("./routes/authRoutes")); // <-- NEW LINE for Auth
-
+app.use("/api/reservations", require("./routes/reservationsRoutes"));
 app.use("/api/images", require("./routes/imageRoutes"));
 app.use("/api/menu-items", require("./routes/menuItemRoutes"));
 app.use("/api/site-assets", require("./routes/siteAssetRoutes"));
