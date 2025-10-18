@@ -42,6 +42,7 @@ const sendAdminNotification = (reservation) => {
       <p>This email was sent automatically. Please log in to the admin panel to manage this reservation.</p>
     `,
   };
+  console.log("message sent to admin");
 
   sgMail
     .send(msg)
