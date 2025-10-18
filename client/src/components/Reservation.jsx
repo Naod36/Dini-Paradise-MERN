@@ -1,6 +1,8 @@
 import React, { useState } from "react"; // 1. Import useState
 import { motion } from "framer-motion";
 
+const API_BASE_URL =
+  "https://dini-paradise-backend-akz8.onrender.com/api/reservations";
 // 2. Renamed the component for clarity
 function ReservationForm() {
   const itemVariants = {
@@ -48,7 +50,7 @@ function ReservationForm() {
     setIsError(false);
 
     try {
-      const response = await fetch("/api/reservations", {
+      const response = await fetch(API_BASE_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
