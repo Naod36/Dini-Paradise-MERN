@@ -68,7 +68,7 @@ async function sendConfirmationEmail(reservation) {
 
 async function sendCancellationEmail(reservation) {
   const mailOptions = {
-    from: `"DINI" <${process.env.EMAIL_USER}>`,
+    from: `"DINI" <${process.env.EMAIL_USER_FORUSER}>`,
     to: reservation.email,
     subject: "Your Reservation Has Been Cancelled",
     html: `
