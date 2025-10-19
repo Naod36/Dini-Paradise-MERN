@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+
 import {
   Menu,
   BarChart2,
@@ -32,8 +34,8 @@ const AssetManagerComponent = () => (
     <BarChart2 className="w-16 h-16 mx-auto mb-4 text-indigo-300" />
     <h2 className="text-xl font-semibold">Site Asset Management</h2>
     <p>
-      This section is for managing site-wide files, documents, and configuration
-      data.
+      comming soon... section for managing site-wide files, documents, and
+      configuration data.
     </p>
   </div>
 );
@@ -43,8 +45,8 @@ const GalleryManagerComponent = () => (
     <Image className="w-16 h-16 mx-auto mb-4 text-indigo-300" />
     <h2 className="text-xl font-semibold">Gallery Management</h2>
     <p>
-      Start here to upload, organize, and delete images for your site's public
-      galleries.
+      comming soon... section to upload, organize, and delete images for your
+      site's public galleries.
     </p>
   </div>
 );
@@ -81,6 +83,21 @@ const AdminPanel = () => {
   const [selectedView, setSelectedView] = useState("menu");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // For desktop
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false); // For mobile
+  // ✅ Ensure proper layout on initial load
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768; // Tailwind's md breakpoint
+      setIsSidebarOpen(!isMobile); // closed on mobile, open on desktop
+      setIsMobileNavOpen(false);
+    };
+
+    // Run once on mount
+    handleResize();
+
+    // Optional: update on resize
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
@@ -96,62 +113,62 @@ const AdminPanel = () => {
     navItems.find((item) => item.id === selectedView)?.component ||
     ItemMenuManager;
   ReservationManagerComponent;
+  // Determine sidebar class strings to behave differently on mobile/md+
+  const sidebarClass = `fixed inset-y-0 left-0 z-50 flex flex-col flex-shrink-0 bg-gray-800 text-white transform transition-all duration-300 ease-in-out relative 
+    ${isMobileNavOpen ? "translate-x-0 w-64" : "w-16 translate-x-0"} 
+    md:${isSidebarOpen ? "w-64" : "w-20"}
+  md:translate-x-0`;
+
+  const pageWrapperClass = "flex-1 flex flex-col overflow-hidden"; // IMPORTANT:
 
   return (
     <div className="flex h-screen bg-gray-50">
       {/* --- START: Sidebar --- */}
-      <nav
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col flex-shrink-0 bg-gray-800 text-white transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 
-          ${isMobileNavOpen ? "translate-x-0" : "-translate-x-full"}
-          ${isSidebarOpen ? "w-64" : "md:w-20"}`}
-      >
+
+      <nav className={`${sidebarClass} flex flex-col justify-between`}>
         {/* Header */}
         <div
-          className={`p-4 flex items-center justify-between h-16 border-b border-gray-700 ${
-            isSidebarOpen ? "" : "md:justify-center"
-          }`}
+          className={`p-4 flex items-center justify-between h-16 border-b border-gray-700
+  ${isSidebarOpen || isMobileNavOpen ? "" : "justify-center"}`}
         >
-          {isSidebarOpen ? (
+          {isSidebarOpen || isMobileNavOpen ? (
             <h1 className="text-xl font-bold tracking-wider">DINI ADMIN</h1>
           ) : (
-            <div className="hidden md:block">
-              {" "}
-              {/* Only show Menu icon on collapsed desktop */}
-              <Menu className="w-6 h-6" />
-            </div>
+            <Menu className="w-6 h-6" />
           )}
 
-          {/* Desktop Collapse/Expand Button */}
           <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-1 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors hidden md:block"
-            aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            onClick={() =>
+              window.innerWidth < 768
+                ? setIsMobileNavOpen(!isMobileNavOpen)
+                : setIsSidebarOpen(!isSidebarOpen)
+            }
+            className="p-1 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors"
+            aria-label="Toggle sidebar"
           >
-            {isSidebarOpen ? (
+            {isSidebarOpen || isMobileNavOpen ? (
               <ChevronLeft className="w-5 h-5" />
             ) : (
               <ChevronRight className="w-5 h-5" />
             )}
           </button>
-          {/* Mobile Close Button */}
-          <button
-            onClick={() => setIsMobileNavOpen(false)}
-            className="p-1 text-gray-400 hover:text-white md:hidden"
-            aria-label="Close menu"
-          >
-            <X className="w-6 h-6" />
-          </button>
         </div>
 
         {/* Navigation Items */}
-        <div className="flex-grow overflow-y-auto p-4 space-y-2">
+        <div
+          className={`flex-grow overflow-y-auto ${
+            isSidebarOpen || isMobileNavOpen
+              ? "p-4 space-y-2 justify-start"
+              : "p-2 flex flex-col items-center justify-center space-y-2"
+          }`}
+        >
           {navItems.map((item) => {
             const isSelected = selectedView === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavItemClick(item.id)}
-                className={`w-full flex items-center p-3 rounded-xl transition-colors duration-150 group 
+                className={`w-full flex items-center p-3 rounded-xl transition-colors duration-150 group
                   ${
                     isSelected
                       ? "bg-indigo-600 text-white shadow-lg"
@@ -163,9 +180,10 @@ const AdminPanel = () => {
                     isSelected ? "" : "text-gray-400 group-hover:text-white"
                   }`}
                 />
+                {/* show label only when sidebar is expanded on md+, or always on mobile when overlay open */}
                 <span
-                  className={`ml-3 whitespace-nowrap overflow-hidden transition-all duration-300 
-                    ${isSidebarOpen ? "block" : "md:hidden"}`}
+                  className={`ml-3 whitespace-nowrap overflow-hidden transition-all duration-300
+    ${isSidebarOpen || isMobileNavOpen ? "block" : "hidden"}`}
                 >
                   {item.name}
                 </span>
@@ -183,12 +201,17 @@ const AdminPanel = () => {
             }`}
           >
             <LogOut className="w-5 h-5" />
-            <span className={`ml-3 ${isSidebarOpen ? "block" : "md:hidden"}`}>
+            <span
+              className={`ml-3  ${
+                isSidebarOpen || isMobileNavOpen ? "block" : "hidden"
+              }`}
+            >
               Log Out
             </span>
           </button>
         </div>
       </nav>
+
       {/* --- END: Sidebar --- */}
 
       {/* --- START: Overlay for Mobile --- */}
@@ -199,11 +222,12 @@ const AdminPanel = () => {
           aria-hidden="true"
         ></div>
       )}
+
       {/* --- END: Overlay --- */}
 
-      <div className="flex-1 flex flex-col">
-        {/* --- START: Mobile Header --- */}
-        <header className="flex items-center justify-between p-4 bg-white border-b md:hidden">
+      <div className={pageWrapperClass}>
+        {/* --- Mobile Header --- */}
+        {/* <header className="flex items-center justify-between p-4 bg-white border-b md:hidden">
           <h1 className="text-lg font-semibold text-gray-800">
             {navItems.find((item) => item.id === selectedView)?.name ||
               "Admin Panel"}
@@ -215,12 +239,11 @@ const AdminPanel = () => {
           >
             <Menu className="w-6 h-6" />
           </button>
-        </header>
-        {/* --- END: Mobile Header --- */}
+        </header> */}
 
         {/* Main Content Area */}
         <main className="flex-grow overflow-y-auto p-0 md:p-6">
-          <div className="h-full">
+          <div className="h-full ">
             <SelectedComponent />
           </div>
         </main>

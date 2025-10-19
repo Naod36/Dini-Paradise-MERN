@@ -69,4 +69,42 @@ router.get("/", async (req, res) => {
   }
 });
 
+// --- UPDATE reservation status ---
+// @route   PUT /api/reservations/:id/status
+// @desc    Update a reservation's status (Confirm or Cancel)
+router.put("/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    // Validate status
+    if (!["Confirmed", "Cancelled"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const reservation = await Reservation.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+
+    // Send email based on new status
+    if (status === "Confirmed") {
+      const { sendConfirmationEmail } = require("../services/emailService");
+      await sendConfirmationEmail(reservation);
+    } else if (status === "Cancelled") {
+      const { sendCancellationEmail } = require("../services/emailService");
+      await sendCancellationEmail(reservation);
+    }
+
+    res.json({ message: "Reservation status updated", reservation });
+  } catch (error) {
+    console.error("Error updating reservation status:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;

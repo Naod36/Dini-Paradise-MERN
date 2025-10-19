@@ -461,8 +461,8 @@ const ItemMenuManager = () => {
 
   // --- Main Render ---
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-white rounded-xl shadow-lg h-full overflow-hidden flex flex-col">
-      <h1 className="text-3xl font-extrabold text-gray-900 mb-6 border-b pb-3">
+    <div className="p-4 sm:p-6 lg:p-8 bg-white rounded-xl shadow-lg h-full overflow-y-auto">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">
         Item Menu Manager
       </h1>
 
@@ -506,131 +506,133 @@ const ItemMenuManager = () => {
       )}
 
       {/* Menu Items Table (Scrollable) */}
-      <div className="flex-grow overflow-y-auto shadow-md rounded-xl border border-gray-100">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50 sticky top-0 z-10">
-            <tr>
-              {/* Table Headers */}
-              {[
-                "name",
-                "category",
-                "price",
-                "isPopular",
-                "createdAt",
-                "actions",
-              ].map((key) => (
-                <th
-                  key={key}
-                  onClick={() => key !== "actions" && requestSort(key)}
-                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                    key !== "actions"
-                      ? "cursor-pointer hover:bg-gray-100 transition-colors"
-                      : ""
-                  }`}
-                >
-                  {key === "name"
-                    ? "Name / Description"
-                    : key === "category"
-                    ? "Category"
-                    : key === "price"
-                    ? "Price"
-                    : key === "isPopular"
-                    ? "Popular"
-                    : key === "createdAt"
-                    ? "Created Date"
-                    : "Actions"}
-                  {getSortIcon(key)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {sortedAndFilteredItems.length > 0 ? (
-              sortedAndFilteredItems.map((item) => (
-                <tr
-                  key={item._id}
-                  className="hover:bg-indigo-50/50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10">
-                        <img
-                          className="h-10 w-10 rounded-lg object-cover"
-                          src={item.image.src}
-                          alt={item.image.alt}
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src =
-                              "https://placehold.co/40x40/9CA3AF/FFFFFF?text=DINI";
-                          }}
-                        />
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {item.name}
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="overflow-x-auto w-full">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-100">
+              <tr>
+                {/* Table Headers */}
+                {[
+                  "name",
+                  "category",
+                  "price",
+                  "isPopular",
+                  "createdAt",
+                  "actions",
+                ].map((key) => (
+                  <th
+                    key={key}
+                    onClick={() => key !== "actions" && requestSort(key)}
+                    className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                      key !== "actions"
+                        ? "cursor-pointer hover:bg-gray-100 transition-colors"
+                        : ""
+                    }`}
+                  >
+                    {key === "name"
+                      ? "Name / Description"
+                      : key === "category"
+                      ? "Category"
+                      : key === "price"
+                      ? "Price"
+                      : key === "isPopular"
+                      ? "Popular"
+                      : key === "createdAt"
+                      ? "Created Date"
+                      : "Actions"}
+                    {getSortIcon(key)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {sortedAndFilteredItems.length > 0 ? (
+                sortedAndFilteredItems.map((item) => (
+                  <tr
+                    key={item._id}
+                    className="hover:bg-indigo-50/50 transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-10 w-10">
+                          <img
+                            className="h-10 w-10 rounded-lg object-cover"
+                            src={item.image.src}
+                            alt={item.image.alt}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src =
+                                "https://placehold.co/40x40/9CA3AF/FFFFFF?text=DINI";
+                            }}
+                          />
                         </div>
-                        <div className="text-xs text-gray-500 truncate max-w-xs">
-                          {item.description}
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {item.name}
+                          </div>
+                          <div className="text-xs text-gray-500 truncate max-w-xs">
+                            {item.description}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                      {item.category}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    ${item.price.toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.isPopular ? (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Yes
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                        {item.category}
                       </span>
-                    ) : (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                        No
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(item.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => openEditModal(item)}
-                        className="text-indigo-600 hover:text-indigo-900 transition-colors p-1 rounded-full hover:bg-indigo-100"
-                        aria-label={`Edit ${item.name}`}
-                      >
-                        <Edit size={18} />
-                      </button>
-                      <button
-                        onClick={() => openDeleteModal(item)}
-                        className="text-red-600 hover:text-red-900 transition-colors p-1 rounded-full hover:bg-red-100"
-                        aria-label={`Delete ${item.name}`}
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      ${item.price.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.isPopular ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          Yes
+                        </span>
+                      ) : (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                          No
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => openEditModal(item)}
+                          className="text-indigo-600 hover:text-indigo-900 transition-colors p-1 rounded-full hover:bg-indigo-100"
+                          aria-label={`Edit ${item.name}`}
+                        >
+                          <Edit size={18} />
+                        </button>
+                        <button
+                          onClick={() => openDeleteModal(item)}
+                          className="text-red-600 hover:text-red-900 transition-colors p-1 rounded-full hover:bg-red-100"
+                          aria-label={`Delete ${item.name}`}
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="px-6 py-10 text-center text-gray-500"
+                  >
+                    {loading
+                      ? "Loading..."
+                      : "No menu items found matching your criteria."}
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="6"
-                  className="px-6 py-10 text-center text-gray-500"
-                >
-                  {loading
-                    ? "Loading..."
-                    : "No menu items found matching your criteria."}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* CREATE / EDIT / DELETE MODAL */}

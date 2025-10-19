@@ -14,10 +14,12 @@ import {
   Users,
   Mail,
   Phone,
+  Sparkles,
 } from "lucide-react";
 
 const API_BASE_URL =
   "https://dini-paradise-backend-akz8.onrender.com/api/reservations";
+// const API_BASE_URL = "http://localhost:5000/api/reservations";
 
 // --- START: NEW ReservationManagerComponent ---
 // 3. Replace the old placeholder with this functional component
@@ -44,7 +46,32 @@ const ReservationManagerComponent = () => {
 
     fetchReservations();
   }, []); // Empty dependency array means this runs once when the component mounts
+  const handleStatusUpdate = async (id, newStatus) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/${id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to update status");
+      }
+
+      const data = await response.json();
+      // Update local state instantly for better UX
+      setReservations((prev) =>
+        prev.map((r) => (r._id === id ? data.reservation : r))
+      );
+
+      alert(`Reservation ${newStatus.toLowerCase()} successfully!`);
+    } catch (err) {
+      console.error(err);
+      alert("Error updating reservation status.");
+    }
+  };
   if (isLoading) {
     return (
       <div className="p-8 text-center text-gray-500">
@@ -58,8 +85,8 @@ const ReservationManagerComponent = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 bg-gray-50 h-full overflow-y-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+    <div className="p-4 sm:p-6 lg:p-8 bg-white rounded-xl shadow-lg h-full overflow-y-auto">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">
         Reservation Management
       </h1>
 
@@ -116,6 +143,10 @@ const ReservationManagerComponent = () => {
                         <Users className="w-4 h-4 mr-2 text-gray-500" />
                         {res.guests} Guests
                       </div>
+                      <div className="text-sm text-red-500/55 flex items-center mt-1">
+                        <Sparkles className="w-3 h-3 mr-2 text-gray-500" />
+                        {res.requests}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
@@ -131,10 +162,16 @@ const ReservationManagerComponent = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-indigo-600 hover:text-indigo-900 mr-3">
+                      <button
+                        onClick={() => handleStatusUpdate(res._id, "Confirmed")}
+                        className="text-indigo-600 hover:text-indigo-900 mr-3"
+                      >
                         Confirm
                       </button>
-                      <button className="text-red-600 hover:text-red-900">
+                      <button
+                        onClick={() => handleStatusUpdate(res._id, "Cancelled")}
+                        className="text-red-600 hover:text-red-900"
+                      >
                         Cancel
                       </button>
                     </td>
