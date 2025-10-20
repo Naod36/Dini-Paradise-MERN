@@ -116,8 +116,8 @@ const AdminPanel = () => {
   // Determine sidebar class strings to behave differently on mobile/md+
   const sidebarClass = `fixed inset-y-0 left-0 z-50 flex flex-col flex-shrink-0 bg-gray-800 text-white transform transition-all duration-300 ease-in-out relative 
     ${isMobileNavOpen ? "translate-x-0 w-64" : "w-16 translate-x-0"} 
-    md:${isSidebarOpen ? "w-64" : "w-20"}
-  md:translate-x-0`;
+    md:${isSidebarOpen ? "translate-x-0 w-64" : "w-20"}
+  `;
 
   const pageWrapperClass = "flex-1 flex flex-col overflow-hidden"; // IMPORTANT:
 
@@ -128,13 +128,13 @@ const AdminPanel = () => {
       <nav className={`${sidebarClass} flex flex-col justify-between`}>
         {/* Header */}
         <div
-          className={`p-4 flex items-center justify-between h-16 border-b border-gray-700
+          className={`p-4 flex items-center justify-between hover:bg-gray-700 h-16 border-b border-gray-700
   ${isSidebarOpen || isMobileNavOpen ? "" : "justify-center"}`}
         >
           {isSidebarOpen || isMobileNavOpen ? (
             <h1 className="text-xl font-bold tracking-wider">DINI ADMIN</h1>
           ) : (
-            <Menu className="w-6 h-6" />
+            <Menu className="fixed  w-6 h-6" />
           )}
 
           <button
@@ -143,7 +143,7 @@ const AdminPanel = () => {
                 ? setIsMobileNavOpen(!isMobileNavOpen)
                 : setIsSidebarOpen(!isSidebarOpen)
             }
-            className="p-1 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors"
+            className="p-2 ml-4  rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors"
             aria-label="Toggle sidebar"
           >
             {isSidebarOpen || isMobileNavOpen ? (
@@ -200,9 +200,9 @@ const AdminPanel = () => {
               isSidebarOpen ? "" : "md:justify-center"
             }`}
           >
-            <LogOut className="w-5 h-5" />
+            <LogOut className="fixed w-5 h-5" />
             <span
-              className={`ml-3  ${
+              className={`ml-8  ${
                 isSidebarOpen || isMobileNavOpen ? "block" : "hidden"
               }`}
             >
