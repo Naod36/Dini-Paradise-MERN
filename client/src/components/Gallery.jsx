@@ -32,7 +32,15 @@ export default function Gallery({
     const fetchImages = async () => {
       try {
         // Your backend is running on port 5000
+<<<<<<< HEAD
         const response = await fetch("https://dini-paradise-backend-akz8.onrender.com/api/images");
+=======
+        // const response = await fetch("http://localhost:5000/api/images");
+
+        const response = await fetch(
+          "https://dini-paradise-backend-akz8.onrender.com/api/images"
+        );
+>>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
         if (!response.ok) {
           throw new Error("Failed to fetch images");
         }

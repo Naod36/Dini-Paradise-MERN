@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // seed.js
 
 const mongoose = require("mongoose");
@@ -5,10 +6,16 @@ require("dotenv").config();
 
 // const router = express.Router();
 const MenuItem = require("./models/MenuItem");
+=======
+const mongoose = require("mongoose");
+const User = require("./models/User"); // Path to your User model
+require("dotenv").config(); // Ensure this is run to load MONGODB_URI
+>>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/dini-paradise";
 
+<<<<<<< HEAD
 async function seedDatabase() {
   try {
     await mongoose.connect(MONGODB_URI);
@@ -286,3 +293,37 @@ async function seedDatabase() {
 
 // Run it
 seedDatabase();
+=======
+const seedAdmin = async () => {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log("Connected to DB.");
+
+    // Check if admin already exists to prevent duplicates
+    const existingAdmin = await User.findOne({ email: "admin@dini.com" });
+    if (existingAdmin) {
+      console.log("Admin user already exists. Skipping seed.");
+      await mongoose.disconnect();
+      return;
+    }
+
+    // CREATE NEW ADMIN INSTANCE (The .save() method below will hash the password)
+    const newAdmin = new User({
+      email: "admin@dini.com",
+      // The password MUST be the plain text password here
+      password: "password123",
+      role: "admin",
+    });
+
+    await newAdmin.save();
+    console.log("Admin user created and password hashed successfully!");
+
+    await mongoose.disconnect();
+  } catch (error) {
+    console.error("Error seeding admin user:", error);
+    await mongoose.disconnect();
+  }
+};
+
+seedAdmin();
+>>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
