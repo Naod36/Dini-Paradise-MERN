@@ -2,16 +2,6 @@ const express = require("express");
 const router = express.Router();
 const SiteAsset = require("../models/SiteAsset");
 
-<<<<<<< HEAD
-// @route   GET /api/site-assets/key/:key
-// @desc    Get a single site asset by its unique key
-router.get("/key/:key", async (req, res) => {
-  try {
-    const asset = await SiteAsset.findOne({ key: req.params.key });
-    if (!asset) {
-      return res.status(404).json({ msg: "Asset not found" });
-    }
-=======
 // 1. GET ALL ASSETS FOR A SPECIFIC PAGE
 // @route   GET /api/site-assets/page/:page
 // @desc    Get all assets for a specific page (for admin listing)
@@ -71,7 +61,6 @@ router.put("/:key", async (req, res) => {
       return res.status(404).json({ msg: "Asset not found" });
     }
 
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
     res.json(asset);
   } catch (err) {
     console.error(err.message);
@@ -79,10 +68,7 @@ router.put("/:key", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-=======
 // ... your existing GET by key route here ...
 // router.get("/key/:key", async (req, res) => { /* ... */ });
 
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 module.exports = router;

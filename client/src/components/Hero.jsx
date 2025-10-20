@@ -21,12 +21,9 @@ function Hero() {
     console.log("Animation completed!");
   };
   const navigate = useNavigate();
-<<<<<<< HEAD
-=======
   const [heroImages, setHeroImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 
   useEffect(() => {
     const fetchHeroAssets = async () => {

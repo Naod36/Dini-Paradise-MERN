@@ -1,22 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const MenuItem = require("../models/MenuItem");
-<<<<<<< HEAD
-
-// @route   GET /api/menu-items
-// @desc    Get all menu items, with optional filtering
-// @access  Public
-router.get("/", async (req, res) => {
-  try {
-    const filter = {};
-
-    // Allow filtering by category, e.g., /api/menu-items?category=Pizza
-    if (req.query.category) {
-      filter.category = req.query.category;
-    }
-
-    // Allow filtering for popular items, e.g., /api/menu-items?popular=true
-=======
 const jwt = require("jsonwebtoken"); // <-- 1. REQUIRED PACKAGE
 
 // --- AUTH MIDDLEWARE IMPLEMENTATION ---
@@ -69,7 +53,6 @@ router.get("/", async (req, res) => {
       filter.category = req.query.category;
     } // Allow filtering for popular items, e.g., /api/menu-items?popular=true
 
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
     if (req.query.popular === "true") {
       filter.isPopular = true;
     }
@@ -78,13 +61,6 @@ router.get("/", async (req, res) => {
     res.json(items);
   } catch (err) {
     console.error(err.message);
-<<<<<<< HEAD
-    res.status(500).send("Server Error");
-  }
-});
-
-// We will add POST, PUT, DELETE routes here for the admin panel later.
-=======
     res.status(500).json({ msg: "Server Error during GET" }); // Use JSON for errors
   }
 });
@@ -146,6 +122,5 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     res.status(500).json({ msg: "Server Error during DELETE" }); // Use JSON for errors
   }
 });
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 
 module.exports = router;

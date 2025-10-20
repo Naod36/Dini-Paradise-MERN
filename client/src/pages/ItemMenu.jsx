@@ -24,22 +24,14 @@ export default function ItemMenu() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const scrollRef = useHorizontalScroll(40, !isLoading);
-<<<<<<< HEAD
-=======
-
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
   // --- DATA FETCHING ---
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
         // Fetch from your new API endpoint!
-<<<<<<< HEAD
-        const response = await fetch("http://localhost:5000/api/menu-items");
-=======
         const response = await fetch(
           "https://dini-paradise-backend-akz8.onrender.com/api/menu-items"
         );
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
         if (!response.ok) {
           throw new Error("Failed to fetch menu data.");
         }
@@ -55,10 +47,6 @@ export default function ItemMenu() {
     fetchMenuItems();
   }, []); // Empty array means this effect runs once when the component mounts
 
-<<<<<<< HEAD
-  // --- RENDER LOGIC ---
-=======
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
   if (isLoading) {
     return <div className="text-center mt-48">Loading menu...</div>;
   }

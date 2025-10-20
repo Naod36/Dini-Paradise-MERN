@@ -4,11 +4,7 @@ import AboutPreview from "../components/AboutPreview";
 import Gallery from "../components/Gallery";
 import ContactUs from "../components/ContactUs";
 import GradualBlur from "gradualblur";
-<<<<<<< HEAD
-import Reservation from "../components/Reservation";
-=======
 import ReservationForm from "../components/Reservation";
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 
 function Home() {
   return (
@@ -24,11 +20,7 @@ function Home() {
           }
           rotationInterval={8000}
         />
-<<<<<<< HEAD
-        <Reservation />
-=======
         <ReservationForm />
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 
         <ContactUs />
         <GradualBlur

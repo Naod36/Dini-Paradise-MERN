@@ -37,11 +37,8 @@ app.get("/", (req, res) => {
   });
 });
 // Define Routes
-<<<<<<< HEAD
-=======
 app.use("/api/auth", require("./routes/authRoutes")); // <-- NEW LINE for Auth
 app.use("/api/reservations", require("./routes/reservationsRoutes"));
->>>>>>> f502a8653b903797caad2a904a1ef771c89443b5
 app.use("/api/images", require("./routes/imageRoutes"));
 app.use("/api/menu-items", require("./routes/menuItemRoutes"));
 app.use("/api/site-assets", require("./routes/siteAssetRoutes"));
