@@ -71,18 +71,22 @@ function AboutPreview() {
                   variants={itemVariants}
                   className="text-4xl md:text-5xl font-bold text-black mb-6"
                 >
-                  A Culinary
-                  <span className="text-amber-600"> Journey</span>
+                  Welcome to
+                  <span className="text-amber-600"> Dini Paradise</span>
                 </motion.h2>
                 <motion.p
                   variants={itemVariants}
                   className="text-lg text-gray-600 leading-relaxed"
                 >
-                  Since 2020, Dini Paradise has been crafting exceptional dining
-                  experiences that blend traditional flavors with modern
-                  innovation. Our passion for culinary excellence and warm
-                  hospitality has made us a beloved destination for food lovers.
+                  Dini Paradise is more than a café it’s a symbol of warmth, culture, and togetherness in Dire Dawa. Established over three decades ago, we’ve built a place where visitors can unwind, celebrate, and connect in a truly peaceful environment.
+                  <br />
+                  <br />
+                   Surrounded by lush greenery and open air, Dini Paradise welcomes you with a blend of traditional Ethiopian hospitality and modern comfort. Our guests enjoy a rich menu featuring local favorites and international dishes, fresh juices, and the finest Ethiopian coffee.
+                  <br />
+                  <br />
+                  With spacious seating, charming décor, and a friendly atmosphere, Dini Paradise is the perfect choice for:
                 </motion.p>
+                
               </div>
 
               <motion.div variants={itemVariants} className="space-y-6">
@@ -107,7 +111,7 @@ function AboutPreview() {
                   </motion.div>
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      Passion-Driven
+                      Family gatherings
                     </h3>
                     <p className="text-gray-600">
                       Every dish is prepared with love and attention to detail,
