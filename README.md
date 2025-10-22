@@ -10,6 +10,7 @@ A beautiful restaurant landing page built with the MERN stack (MongoDB, Express.
 - **Responsive**: Mobile-first design that works on all devices
 - **Fast Development**: Hot reload for both frontend and backend
 
+<<<<<<< HEAD
 ## 📁 Project Structure
 
 ```
@@ -210,3 +211,5 @@ This project is licensed under the ISC License.
 ---
 
 **Happy coding! 🍽️✨**
+=======
+>>>>>>> f502a8653b903797caad2a904a1ef771c89443b5

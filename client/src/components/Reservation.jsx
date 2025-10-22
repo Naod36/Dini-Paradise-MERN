@@ -194,7 +194,6 @@ function ReservationForm() {
                 </div>
               </div>
             </div>
-
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-700">
                 Reservation Detail

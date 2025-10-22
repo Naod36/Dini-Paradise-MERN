@@ -24,7 +24,6 @@ export default function ItemMenu() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const scrollRef = useHorizontalScroll(40, !isLoading);
-
   // --- DATA FETCHING ---
   useEffect(() => {
     const fetchMenuItems = async () => {
