@@ -17,7 +17,7 @@ import {
 // Import the Item Menu Manager we just created
 import ItemMenuManager from "../../components/ItemMenuManager.jsx";
 import ReservationManagerComponent from "../../components/ReservationManagerComponent.jsx";
-
+import AssetManagerComponent from "../../components/AssetManagerComponent.jsx";
 // Placeholder components for future development (no changes here)
 // const ReservationManagerComponent = () => (
 //   <div className="p-8 text-center text-gray-500">
@@ -28,17 +28,6 @@ import ReservationManagerComponent from "../../components/ReservationManagerComp
 //     </p>
 //   </div>
 // );
-
-const AssetManagerComponent = () => (
-  <div className="p-8 text-center text-gray-500">
-    <BarChart2 className="w-16 h-16 mx-auto mb-4 text-indigo-300" />
-    <h2 className="text-xl font-semibold">Site Asset Management</h2>
-    <p>
-      comming soon... section for managing site-wide files, documents, and
-      configuration data.
-    </p>
-  </div>
-);
 
 const GalleryManagerComponent = () => (
   <div className="p-8 text-center text-gray-500">

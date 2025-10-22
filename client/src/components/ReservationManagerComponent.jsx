@@ -17,9 +17,9 @@ import {
   Sparkles,
 } from "lucide-react";
 
-const API_BASE_URL =
-  "https://dini-paradise-backend-akz8.onrender.com/api/reservations";
-// const API_BASE_URL = "http://localhost:5000/api/reservations";
+// const API_BASE_URL =
+//   "https://dini-paradise-backend-akz8.onrender.com/api/reservations";
+const API_BASE_URL = "http://localhost:5000/api/reservations";
 
 // --- START: NEW ReservationManagerComponent ---
 // 3. Replace the old placeholder with this functional component
