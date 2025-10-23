@@ -13,7 +13,7 @@ const pageOptions = [
   "home",
   "about",
   "gallery",
-  "itemMenu",
+  "itemmenu",
   "contact",
   "global",
 ];
@@ -38,12 +38,15 @@ const AssetManagerComponent = () => {
       setError(null);
       try {
         const token = localStorage.getItem("adminToken"); // Get auth token
-        const response = await fetch(`/api/site-assets/page/${selectedPage}`, {
-          headers: {
-            // Add authorization if your route is protected
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://dini-paradise-backend-akz8.onrender.com/api/site-assets/page/${selectedPage}`,
+          {
+            headers: {
+              // Add authorization if your route is protected
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch assets.");
@@ -92,14 +95,17 @@ const AssetManagerComponent = () => {
 
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await fetch(`/api/site-assets/${editingAsset.key}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `https://dini-paradise-backend-akz8.onrender.com/api/site-assets/${editingAsset.key}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const updatedAsset = await response.json();
 

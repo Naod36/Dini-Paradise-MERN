@@ -18,6 +18,7 @@ import {
 import ItemMenuManager from "../../components/ItemMenuManager.jsx";
 import ReservationManagerComponent from "../../components/ReservationManagerComponent.jsx";
 import AssetManagerComponent from "../../components/AssetManagerComponent.jsx";
+import GalleryManagerComponent from "../../components/GalleryManagerComponent.jsx";
 // Placeholder components for future development (no changes here)
 // const ReservationManagerComponent = () => (
 //   <div className="p-8 text-center text-gray-500">
@@ -28,17 +29,6 @@ import AssetManagerComponent from "../../components/AssetManagerComponent.jsx";
 //     </p>
 //   </div>
 // );
-
-const GalleryManagerComponent = () => (
-  <div className="p-8 text-center text-gray-500">
-    <Image className="w-16 h-16 mx-auto mb-4 text-indigo-300" />
-    <h2 className="text-xl font-semibold">Gallery Management</h2>
-    <p>
-      comming soon... section to upload, organize, and delete images for your
-      site's public galleries.
-    </p>
-  </div>
-);
 
 // Define the navigation items (no changes here)
 const navItems = [

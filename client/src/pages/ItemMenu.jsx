@@ -9,12 +9,14 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-const background = [
-  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwcmVzdGF1cmFudCUyMGludGVyaW9yfGVufDF8fHx8MTc1ODEzMTg0OXww&ixlib=rb-4.1.0&q=80&w=1920&utm_source=figma&utm_medium=referral",
-];
+// const background = [
+//   "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwcmVzdGF1cmFudCUyMGludGVyaW9yfGVufDF8fHx8MTc1ODEzMTg0OXww&ixlib=rb-4.1.0&q=80&w=1920&utm_source=figma&utm_medium=referral",
+// ];
 
 export default function ItemMenu() {
   // --- STATE MANAGEMENT ---
+  const [background, setBackground] = useState([]);
+
   const [menuItems, setMenuItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +26,50 @@ export default function ItemMenu() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const scrollRef = useHorizontalScroll(40, !isLoading);
+
   // --- DATA FETCHING ---
+  useEffect(() => {
+    const fetchAssets = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          "https://dini-paradise-backend-akz8.onrender.com/api/site-assets/page/itemmenu"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch assets.");
+        }
+        const data = await response.json();
+        const backgroundAsset = data.find((asset) => asset.key === "menu_bg_1");
+        if (backgroundAsset && backgroundAsset.src) {
+          // 2. If it exists, set the state to only store its src and alt attributes.
+          //    We provide a fallback alt text if the asset is missing one.
+          setBackground({
+            src: backgroundAsset.src,
+            alt: backgroundAsset.alt || "Menu Background Image",
+          });
+        } else {
+          console.warn(
+            "Asset 'menu_bg_1' not found or is missing 'src' in the response data:",
+            data
+          );
+          setError("Specific background asset not found.");
+        }
+
+        // If successful, break the retry loop
+        setIsLoading(false);
+        return;
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAssets();
+  }, []);
+
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
@@ -110,7 +155,7 @@ export default function ItemMenu() {
                 className="absolute inset-0 w-full h-full"
               >
                 <ImageWithFallback
-                  src={background}
+                  src={background.src}
                   alt="Restaurant Interior"
                   className="w-full h-full object-cover"
                 />
