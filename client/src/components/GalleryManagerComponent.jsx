@@ -3,15 +3,18 @@ import {
   BarChart2,
   Edit,
   Save,
+  Trash2,
   Plus,
   X,
   AlertTriangle,
   CheckCircle,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 // List of pages from your model's enum
-const API_BASE_URL =
-  "https://dini-paradise-backend-akz8.onrender.com/api/images";
+// const API_BASE_URL =
+//   "https://dini-paradise-backend-akz8.onrender.com/api/images";
+const API_BASE_URL = "http://localhost:5000/api/images";
 
 const getAuthToken = () => localStorage.getItem("adminToken");
 
@@ -95,31 +98,21 @@ const GalleryManagerComponent = () => {
     });
     setModalMode("create");
     setIsModalOpen(true);
+    setMessage({ type: "", content: "" }); // Clear previous messages
   };
 
   const openEditModal = (asset) => {
     setCurrentItem(asset);
     setModalMode("edit");
     setIsModalOpen(true);
+    setMessage({ type: "", content: "" }); // Clear previous messages
   };
   const openDeleteModal = (asset) => {
     setCurrentItem(asset);
     setModalMode("delete");
     setIsModalOpen(true);
+    setMessage({ type: "", content: "" }); // Clear previous messages
   };
-
-  // const handleEditClick = (asset) => {
-  //   setEditingGallery(asset);
-  //   setFormData({
-  //     name: asset.name,
-  //     description: asset.description,
-  //     src: asset.src,
-  //     public_id: asset.public_id,
-  //     alt: asset.alt,
-  //   });
-  //   setIsModalOpen(true);
-  //   setMessage({ type: "", content: "" }); // Clear previous messages
-  // };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -136,7 +129,7 @@ const GalleryManagerComponent = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     setIsSaving(true);
-    // setMessage({ type: "", content: "" });
+    setMessage({ type: "", content: "" });
     setError(null);
     const token = getAuthToken();
 
@@ -172,6 +165,16 @@ const GalleryManagerComponent = () => {
         }
         throw new Error(errorMsg);
       }
+      const successMessage =
+        modalMode === "create"
+          ? `Item "${currentItem.name}" successfully created!`
+          : `Item "${currentItem.name}" successfully updated!`;
+
+      toast.success(successMessage);
+      setMessage({
+        type: "success",
+        content: "Gallery Item updated successfully!",
+      });
 
       // Refetch data to update the table
       await fetchGallery();
@@ -179,9 +182,12 @@ const GalleryManagerComponent = () => {
     } catch (err) {
       console.error("Form Submit Error:", err);
       // Display the detailed error message caught above
+      setMessage({ type: "error", content: err.message });
+
       setError(`Operation failed: ${err.message}`);
+      toast.error(`Failed to save item: ${err.message}`);
     } finally {
-      setLoading(false);
+      setIsSaving(false);
     }
   };
 
@@ -213,13 +219,14 @@ const GalleryManagerComponent = () => {
         }
         throw new Error(errorMsg);
       }
-
+      toast.success(`Item "${currentItem.name}" successfully deleted!`);
       // Refetch data to update the table
       await fetchGallery();
       setIsModalOpen(false);
     } catch (err) {
       console.error("Delete Error:", err);
       setError(`Deletion failed: ${err.message}`);
+      toast.error(`Failed to delete item: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -228,6 +235,27 @@ const GalleryManagerComponent = () => {
   // --- Render Logic ---
   const renderFormContent = () => (
     <form onSubmit={handleSave} className="space-y-4">
+      {/* Key (ONLY for 'create' mode) */}
+      {modalMode === "create" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Unique Key
+          </label>
+          <input
+            type="text"
+            value={currentItem?.key || ""}
+            onChange={(e) =>
+              setCurrentItem({ ...currentItem, key: e.target.value })
+            }
+            required
+            placeholder="e.g., gallery_img_1"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            This unique ID cannot be changed later.
+          </p>
+        </div>
+      )}
       {/* Name */}
       <div>
         <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -315,25 +343,55 @@ const GalleryManagerComponent = () => {
           />
         </div>
       </fieldset>
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-colors flex items-center"
-      >
-        {loading
-          ? "Saving..."
-          : modalMode === "create"
-          ? "Create Item"
-          : "Save Changes"}
-      </button>
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {/* Message Area */}
+      {message.content && (
+        <div
+          className={`flex items-center p-3 rounded-md ${
+            message.type === "success"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message.type === "success" ? (
+            <CheckCircle className="w-5 h-5 mr-2" />
+          ) : (
+            <AlertTriangle className="w-5 h-5 mr-2" />
+          )}
+          {message.content}
+        </div>
+      )}
+      <div className="flex justify-end pt-4 space-x-3">
+        <button
+          type="button"
+          onClick={handleModalClose}
+          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={isSaving}
+          className="flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-indigo-300"
+        >
+          {isSaving ? (
+            "Saving..."
+          ) : modalMode === "create" ? (
+            "Create Item"
+          ) : (
+            <>
+              <Save className="w-4 h-4 mr-2" /> Save Changes
+            </>
+          )}
+        </button>
+      </div>
     </form>
   );
 
   const renderDeleteContent = () => (
     <div className="space-y-4">
       <p className="text-lg text-gray-700">
-        Are you sure you want to delete the item:{" "}
+        Are you sure you want to delete the item:
+        <br />{" "}
         <span className="font-semibold text-indigo-600">
           {currentItem?.name}
         </span>
@@ -343,16 +401,22 @@ const GalleryManagerComponent = () => {
       <div className="flex justify-end space-x-3">
         <button
           onClick={() => setIsModalOpen(false)}
-          className="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
         >
           Cancel
         </button>
         <button
           onClick={handleDeleteItem}
-          disabled={loading}
-          className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition-colors"
+          disabled={isSaving}
+          className="flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition-colors"
         >
-          {loading ? "Deleting..." : "Confirm Delete"}
+          {isSaving ? (
+            "Deleting..."
+          ) : (
+            <>
+              <Trash2 className="w-4 h-4 mr-2" /> Confirm Delete
+            </>
+          )}
         </button>
       </div>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -378,36 +442,36 @@ const GalleryManagerComponent = () => {
         {gallery.map((asset) => (
           <div
             key={asset._id}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
           >
             <img
               src={asset.src}
               alt={asset.alt}
               className="w-full h-48 object-cover"
             />
-            <div className="p-4">
+            <div className="p-4 flex flex-col flex-grow ">
               <h3 className="font-bold text-lg text-gray-800">{asset.name}</h3>
               <p className="text-sm text-gray-600 mt-1">
                 <strong>description:</strong> {asset.description}
               </p>
-              {/* <p className="text-xs text-gray-500 mt-2 break-all">
-                <strong>Public ID:</strong> {asset.public_id}
-              </p> */}
-              <button
-                onClick={() => openEditModal(asset)}
-                className="w-full mt-4 flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-                aria-label={`Edit ${asset.name}`}
-              >
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Image
-              </button>
-              {/* <button
-                onClick={() => openEditModal(asset)}
-                className="text-indigo-600 hover:text-indigo-900 transition-colors p-1 rounded-full hover:bg-indigo-100"
-                aria-label={`Edit ${asset.name}`}
-              >
-                <Edit size={18} />
-              </button> */}
+
+              <div className="flex justify-end pt-4 mt-auto space-x-3">
+                <button
+                  onClick={() => openEditModal(asset)}
+                  className="w-full flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                  aria-label={`Edit ${asset.name}`}
+                >
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit
+                </button>
+                <button
+                  onClick={() => openDeleteModal(asset)}
+                  className="text-red-600 hover:text-red-900 transition-colors p-1 rounded-md hover:bg-red-100"
+                  aria-label={`Delete ${asset.name}`}
+                >
+                  <Trash2 className="w- h-6 " />
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -422,33 +486,12 @@ const GalleryManagerComponent = () => {
           Gallery Management
         </h1>
         <button
-          // onClick={openCreateModal}
+          onClick={openCreateModal}
           className="p-24 my-8 w-full sm:w-auto flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
         >
           <Plus size={20} className="mr-2" />
           Add New Item
         </button>
-        {/* Page Selector */}
-        {/* <div className="mb-6 max-w-sm">
-          <label
-            htmlFor="page-select"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Select Page
-          </label>
-          <select
-            id="page-select"
-            value={selectedPage}
-            onChange={(e) => setSelectedPage(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            {pageOptions.map((page) => (
-              <option key={page} value={page}>
-                {page.charAt(0).toUpperCase() + page.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div> */}
 
         {/* Asset List */}
         {content}

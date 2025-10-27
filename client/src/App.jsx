@@ -14,6 +14,9 @@ import ItemMenu from "./pages/ItemMenu";
 import AdminPanel from "./pages/Admin/AdminPanel.jsx";
 import AdminLogin from "./pages/Admin/AdminLogin.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { ToastContainer, toast } from "react-toastify";
+// 👇 ADD THIS LINE HERE
+import "react-toastify/dist/ReactToastify.css";
 
 function AppWrapper() {
   const location = useLocation();
@@ -94,6 +97,14 @@ function AppWrapper() {
           {/* You can add a 404 route here if needed, or let the path="*" handle it */}
         </Routes>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+      />
     </>
   );
 }

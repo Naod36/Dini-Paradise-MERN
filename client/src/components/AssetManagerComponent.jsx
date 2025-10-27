@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   CheckCircle,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 // List of pages from your model's enum
 const pageOptions = [
@@ -113,6 +114,8 @@ const AssetManagerComponent = () => {
         throw new Error(updatedAsset.msg || "Failed to save asset.");
       }
 
+      toast.success(`Image ${editingAsset.key} successfully updated!`);
+
       // Update the asset in the local state for instant feedback
       setAssets(
         assets.map((asset) =>
@@ -130,6 +133,7 @@ const AssetManagerComponent = () => {
       }, 1500);
     } catch (err) {
       setMessage({ type: "error", content: err.message });
+      toast.error(`Failed to Update Image: ${err.message}`);
     } finally {
       setIsSaving(false);
     }
@@ -156,14 +160,14 @@ const AssetManagerComponent = () => {
         {assets.map((asset) => (
           <div
             key={asset._id}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
           >
             <img
               src={asset.src}
               alt={asset.alt}
               className="w-full h-48 object-cover"
             />
-            <div className="p-4">
+            <div className="p-4 flex flex-col flex-grow">
               <h3 className="font-bold text-lg text-gray-800">{asset.key}</h3>
               <p className="text-sm text-gray-600 mt-1">
                 <strong>Alt:</strong> {asset.alt}
@@ -171,13 +175,15 @@ const AssetManagerComponent = () => {
               <p className="text-xs text-gray-500 mt-2 break-all">
                 <strong>Public ID:</strong> {asset.public_id}
               </p>
-              <button
-                onClick={() => handleEditClick(asset)}
-                className="w-full mt-4 flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-              >
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Asset
-              </button>
+              <div className="flex justify-end pt-4 space-x-3 mt-auto">
+                <button
+                  onClick={() => handleEditClick(asset)}
+                  className=" flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                >
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit Asset
+                </button>
+              </div>
             </div>
           </div>
         ))}
