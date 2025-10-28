@@ -142,7 +142,7 @@ export default function ItemMenu() {
     <div className="">
       {/* 2. BACKGROUND LAYER: Positioned absolutely to fill the parent. */}
       {/* 'z-0' places this layer at the very back. */}
-      <div className="relative w-full h-auto bg-gradient-to-t from-orange-800 via-orange-600 to-orange-300">
+      <div className="relative w-full h-auto bg-gradient-to-t from-blue-800 via-blue-600 to-gray-100">
         <div className="absolute  inset-0 ">
           <motion.div className="absolute inset-0 top-6 w-full h-auto">
             <AnimatePresence mode="wait">
@@ -163,8 +163,8 @@ export default function ItemMenu() {
             </AnimatePresence>
           </motion.div>
           {/* --- Paste All Your Background Elements Here --- */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-black/30" />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/20" />
+          <div className="absolute inset-0 bg-black/5" />
         </div>
 
         {/* 3. CONTENT LAYER: Positioned relatively with a higher z-index. */}
@@ -173,8 +173,8 @@ export default function ItemMenu() {
         <div className="relative z-10 p-6 max-w-6xl mx-auto text-gray-200">
           {/* --- All Your Original Content Goes Here --- */}
           {/* Popular Items Scroll */}
-          <h2 className="text-xl font-semibold mb-4 text-white">Popular</h2>
-          <div className="relative flex items-center">
+          <h2 className="text-3xl mt-16 text-center  font-bold text-white">Popular</h2>
+          <div className="relative flex items-center w-auto">
             <button
               onClick={slideLeft}
               // Adjusted button style for dark mode
@@ -223,11 +223,11 @@ export default function ItemMenu() {
                   key={item._id}
                   onClick={() => setSelectedItem(item)}
                   // Adjusted card style for dark mode
-                  className="min-w-[160px] bg-gray-800 text-white rounded-lg shadow cursor-pointer hover:scale-105 transition-transform duration-300"
+                  className="min-w-[160px] bg-white text-gray-800 rounded-lg shadow-xl border-2 cursor-pointer hover:scale-105 transition-transform duration-300"
                 >
                   <img
                     src={item.image.src}
-                    alt={item.image.alt}
+                    // alt={item.image.alt}
                     className="w-full h-28 object-cover rounded-t-lg"
                   />
                   <div className="p-2">
@@ -252,7 +252,7 @@ export default function ItemMenu() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             // Adjusted input style for dark mode
-            className="w-full p-3 border border-gray-600 bg-gray-800 text-white rounded-lg mb-6 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full p-3 border border-amber-600/40 bg-white text-gray-800 rounded-3xl mb-6 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
         </div>
 
@@ -263,10 +263,10 @@ export default function ItemMenu() {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               // Adjusted button styles for dark mode
-              className={`px-4 py-2 rounded-full border border-gray-600 transition-all ${
+              className={`px-4 py-2 rounded-full shadow-md border border-amber-600/50 transition-all ${
                 selectedCategory === cat
                   ? "bg-amber-500 text-white shadow-md"
-                  : "bg-gray-700 hover:bg-amber-600/50"
+                  : "bg-white hover:bg-amber-600/20"
               }`}
             >
               {cat}
@@ -292,7 +292,7 @@ export default function ItemMenu() {
             <div className="p-4">
               <h3 className="text-lg font-semibold">{item.name}</h3>
               <p className="text-amber-600 font-bold">
-                ${item.price.toFixed(2)}
+                {item.price.toFixed(2)} Birr
               </p>
             </div>
           </div>
@@ -311,9 +311,9 @@ export default function ItemMenu() {
             {/* Left: Image */}
             <div className="md:w-1/2">
               <img
-                src={selectedItem.image}
+                src={selectedItem.image.src}
                 alt={selectedItem.name}
-                className="w-full h-full object-cover rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
+                className="h-64 w-full object-cover rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
               />
             </div>
             {/* Right: Details */}
@@ -321,7 +321,7 @@ export default function ItemMenu() {
               <h3 className="text-2xl font-bold mb-4">{selectedItem.name}</h3>
               <p className="text-gray-700 mb-4">{selectedItem.description}</p>
               <p className="text-amber-600 font-bold text-xl mb-6">
-                ${selectedItem.price.toFixed(2)}
+                {selectedItem.price.toFixed(2)} Birr
               </p>
               <button
                 onClick={() => setSelectedItem(null)}
