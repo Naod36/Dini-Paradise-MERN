@@ -10,7 +10,7 @@ const SiteAssetSchema = new mongoose.Schema({
   page: {
     type: String,
     required: true,
-    enum: ["home", "about", "gallery", "itemMenu", "contact", "global"], // Use an enum for consistency
+    enum: ["home", "about", "gallery", "itemmenu", "contact", "global"], // Use an enum for consistency
     lowercase: true,
     trim: true,
   },

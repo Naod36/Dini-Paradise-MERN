@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const ImageSchema = new mongoose.Schema(
   {
+    key: {
+      type: String,
+      // Temporarily set to false to allow existing documents to load
+      required: false,
+      unique: true,
+      trim: true,
+    },
     // The secure URL from Cloudinary
     src: {
       type: String,
