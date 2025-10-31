@@ -7,6 +7,9 @@ import {
   ChevronUp,
   ChevronDown,
   X,
+  Loader2,
+  Image,
+  Upload,
 } from "lucide-react";
 
 // The base URL for your menu item API, matching the backend configuration
@@ -57,6 +60,8 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 const ItemMenuManager = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
@@ -68,9 +73,12 @@ const ItemMenuManager = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create"); // 'create' or 'edit' or 'delete'
   const [currentItem, setCurrentItem] = useState(null);
+  const [fileUploaded, setFileUploaded] = useState(false);
 
   // --- Data Fetching (Read) ---
   const fetchItems = async () => {
+    setIsLoading(true);
+
     setLoading(true);
     setError(null);
     try {
@@ -87,6 +95,7 @@ const ItemMenuManager = () => {
       );
     } finally {
       setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -171,6 +180,61 @@ const ItemMenuManager = () => {
     setCurrentItem(item);
     setModalMode("delete");
     setIsModalOpen(true);
+  };
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setIsLoading(true);
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "Dini_paradise");
+    data.append("cloud_name", "dabgmwnvx");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dabgmwnvx/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const uploadedImage = await res.json();
+
+      if (uploadedImage.url && uploadedImage.public_id) {
+        setCurrentItem({
+          ...currentItem, // Spreads all top-level properties (name, price, etc.)
+          image: {
+            ...currentItem.image, // Spreads all existing image properties (like 'alt')
+            src: uploadedImage.url, // <-- **CORRECT** target for the URL
+            public_id: uploadedImage.public_id, // <-- **CORRECT** target for the ID
+          },
+        });
+        setFileUploaded(true);
+      } else {
+        console.error("Cloudinary upload failed:", uploadedImage);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // --- 2. Create a new handler to clear the image ---
+  const handleClearImage = () => {
+    setCurrentItem({
+      ...currentItem.image,
+      src: "",
+      public_id: "",
+    });
+    setFileUploaded(false); // <-- Allow manual input again
+    // Also reset the file input field so the user can re-upload the same file
+    const fileInput = document.querySelector(".file-input");
+    if (fileInput) {
+      fileInput.value = "";
+    }
   };
 
   const handleFormSubmit = async (e) => {
@@ -294,6 +358,23 @@ const ItemMenuManager = () => {
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
         />
       </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Image Alt Text
+        </label>
+        <input
+          type="text"
+          value={currentItem?.image?.alt || ""}
+          onChange={(e) =>
+            setCurrentItem({
+              ...currentItem,
+              image: { ...currentItem.image, alt: e.target.value },
+            })
+          }
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+        />
+      </div>
 
       {/* Price and Category (Side-by-side) */}
       <div className="flex space-x-4">
@@ -341,7 +422,164 @@ const ItemMenuManager = () => {
         <legend className="text-sm font-semibold text-gray-700 px-1">
           Image Details
         </legend>
-        <div>
+        {/* Responsive 2-column grid. Stacks on mobile, splits on large screens. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6">
+          {/* --- COLUMN 1: UPLOAD & PREVIEW --- */}
+          <div className="space-y-4">
+            {/* Upload Box */}
+            <div className="file-upload">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Upload Image
+              </label>
+              <div
+                className={`upload-container relative ${
+                  isLoading ? "bg-gray-500" : "bg-indigo-600"
+                } p-6 rounded-xl flex flex-col items-center justify-center text-white text-center transition-all`}
+              >
+                {isLoading ? (
+                  <>
+                    {/* Improved visible loader */}
+                    <Loader2 className="w-8 h-8 animate-spin" />
+                    <span className="mt-2 text-sm font-medium">
+                      Uploading...
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="upload-icon mb-2">
+                      <Upload className="w-8 h-8 text-white" />
+                    </div>
+                    <span className="font-medium">Click or drag to upload</span>
+                    <span className="text-xs text-indigo-100">
+                      Replaces the current image
+                    </span>
+                    <input
+                      type="file"
+                      className="file-input absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={handleFileUpload}
+                      disabled={isLoading}
+                    />
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Image Preview */}
+            <div className="preview-container">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Image Preview
+              </label>
+
+              <div className="w-full aspect-video bg-gray-100 rounded-md border border-gray-300 flex items-center justify-center relative">
+                {currentItem?.image?.src ? (
+                  <>
+                    <img
+                      src={currentItem.image.src}
+                      alt="Image preview"
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleClearImage}
+                      className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/80 transition-all"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </>
+                ) : (
+                  <div className="text-gray-500 flex flex-col items-center">
+                    <Image className="w-12 h-12 text-gray-400" />
+                    <span>No image selected</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* --- COLUMN 2: IMAGE DETAILS (INPUTS) --- */}
+          <div className="space-y-4 mt-4 lg:mt-0">
+            {/* This section now conditionally renders inputs or styled text */}
+            {fileUploaded ? (
+              <>
+                {/* Read-only text display */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Image URL (from upload)
+                  </label>
+                  <p className="mt-1 p-2 block w-full text-sm text-gray-600 bg-gray-100 rounded-md border border-gray-300 break-words">
+                    {currentItem.image?.src}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Image Public ID (from upload)
+                  </label>
+                  <p className="mt-1 p-2 block w-full text-sm text-gray-600 bg-gray-100 rounded-md border border-gray-300 break-words">
+                    {currentItem.image?.public_id}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFileUploaded(false)}
+                  className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                >
+                  Edit Manually
+                </button>
+              </>
+            ) : (
+              <>
+                {/* Editable inputs */}
+                <div>
+                  <label
+                    htmlFor="imageUrl"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Image URL (src)
+                  </label>
+                  <input
+                    id="imageUrl"
+                    type="url"
+                    value={currentItem?.image?.src || ""}
+                    onChange={(e) => {
+                      setCurrentItem({
+                        ...currentItem.image,
+                        src: e.target.value,
+                      });
+                      setFileUploaded(false); // <-- Set to manual mode
+                    }}
+                    required
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                    placeholder="https://... or upload a file"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="publicId"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Image Public ID
+                  </label>
+                  <input
+                    id="publicId"
+                    type="text"
+                    value={currentItem?.image?.public_id || ""}
+                    onChange={(e) => {
+                      setCurrentItem({
+                        ...currentItem.image,
+                        public_id: e.target.value,
+                      });
+                      setFileUploaded(false); // <-- Set to manual mode
+                    }}
+                    required
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                    placeholder="e.g., folder/image_name"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700">
             Image URL (src)
           </label>
@@ -376,7 +614,7 @@ const ItemMenuManager = () => {
           />
         </div>
         {/* public_id is required by the model but typically managed server-side during image upload. We allow editing it here for full CRUD control */}
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700">
             Image Public ID
           </label>
@@ -392,7 +630,7 @@ const ItemMenuManager = () => {
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
           />
-        </div>
+        </div> */}
       </fieldset>
 
       {/* Is Popular Checkbox */}
@@ -498,11 +736,6 @@ const ItemMenuManager = () => {
         >
           {error}
         </div>
-      )}
-      {loading && (
-        <p className="text-center text-indigo-600 font-semibold py-4">
-          Loading items...
-        </p>
       )}
 
       {/* Menu Items Table (Scrollable) */}
@@ -624,9 +857,16 @@ const ItemMenuManager = () => {
                     colSpan="6"
                     className="px-6 py-10 text-center text-gray-500"
                   >
-                    {loading
-                      ? "Loading..."
-                      : "No menu items found matching your criteria."}
+                    {loading ? (
+                      <div className="flex flex-col items-center justify-center py-4">
+                        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+                        <span className="mt-2 text-sm font-semibold text-gray-700">
+                          Loading Menu List...
+                        </span>
+                      </div>
+                    ) : (
+                      "No menu items found matching your criteria."
+                    )}
                   </td>
                 </tr>
               )}

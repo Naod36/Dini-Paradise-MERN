@@ -29,7 +29,7 @@ const ImageSchema = new mongoose.Schema(
     },
     alt: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }
