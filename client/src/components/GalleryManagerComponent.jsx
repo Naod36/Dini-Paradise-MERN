@@ -15,9 +15,9 @@ import {
 import { toast } from "react-toastify";
 
 // List of pages from your model's enum
-// const API_BASE_URL =
-//   "https://dini-paradise-backend-akz8.onrender.com/api/images";
-const API_BASE_URL = "http://localhost:5000/api/images";
+ const API_BASE_URL =
+   "https://dini-paradise-backend-akz8.onrender.com/api/images";
+// const API_BASE_URL = "http://localhost:5000/api/images";
 
 const getAuthToken = () => localStorage.getItem("adminToken");
 

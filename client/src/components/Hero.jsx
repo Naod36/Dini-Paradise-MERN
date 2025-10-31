@@ -396,7 +396,7 @@ function Hero() {
               className="text-lg md:text-2xl mb-6 text-white/90 max-w-2xl"
               style={{ textShadow: "1px 1px 10px rgba(0,0,0,0.7)" }}
             >
-              A Culinary Journey
+              Where every moment feels special.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
