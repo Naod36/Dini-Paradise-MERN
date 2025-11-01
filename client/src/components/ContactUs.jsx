@@ -48,15 +48,7 @@ function ContactUs() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="relative rounded-lg overflow-hidden w-full h-[480px]">
                 {/* Map iframe */}
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11672.945750644447!2d-122.42107853750231!3d37.7730507907087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858070cc2fbd55%3A0xa71491d736f62d5c!2sGolden%20Gate%20Bridge!5e0!3m2!1sen!2sus!4v1619524992238!5m2!1sen!2sus"
-                  width="100%"
-                  height="100%"
-                  className=""
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  title="Google Map"
-                ></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1167.917386131958!2d41.862327418297006!3d9.592035085789592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x163101c0575d6163%3A0x657fdaebe9f2f5e1!2z4Yuy4YqSIOGNk-GIq-GLs-GLreGLnSBEaW5pIFBhcmFkaXNl!5e1!3m2!1sen!2set!4v1761987243405!5m2!1sen!2set" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
                 {/* Info card overlay */}
                 <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-full lg:w-2/3 bg-white/75 rounded-lg shadow-md p-6 flex flex-wrap gap-4">
