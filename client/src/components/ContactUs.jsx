@@ -51,7 +51,7 @@ function ContactUs() {
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1167.917386131958!2d41.862327418297006!3d9.592035085789592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x163101c0575d6163%3A0x657fdaebe9f2f5e1!2z4Yuy4YqSIOGNk-GIq-GLs-GLreGLnSBEaW5pIFBhcmFkaXNl!5e1!3m2!1sen!2set!4v1761987243405!5m2!1sen!2set" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
                 {/* Info card overlay */}
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-full lg:w-2/3 bg-white/75 rounded-lg shadow-md p-6 flex flex-wrap gap-4">
+                {/* <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-full lg:w-2/3 bg-white/75 rounded-lg shadow-md p-6 flex flex-wrap gap-4">
                   <div className="lg:w-1/2 px-2">
                     <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">
                       ADDRESS
@@ -60,7 +60,7 @@ function ContactUs() {
                       Photo booth tattooed prism,
                     </p>
                   </div>
-                </div>
+                </div>*/}
               </div>
               <form className="my-auto">
                 <div className="flex flex-col gap-6">
