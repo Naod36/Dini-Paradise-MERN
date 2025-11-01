@@ -25,8 +25,8 @@ const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6 transform transition-all duration-300 scale-100 max-h-screen overflow-y-auto my-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm"onClick={handleModalClose}>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6 transform transition-all duration-300 scale-100 max-h-screen overflow-y-auto my-4"onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center pb-3 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
           <button
