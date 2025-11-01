@@ -279,10 +279,7 @@ const ItemMenuManager = () => {
           : `Menu Item "${currentItem.name}" successfully updated!`;
 
       toast.success(successMessage);
-      setMessage({
-        type: "success",
-        content: "Menu Item updated successfully!",
-      });
+      
 
       // Refetch data to update the table
       await fetchItems();
