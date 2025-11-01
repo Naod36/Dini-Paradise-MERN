@@ -15,8 +15,8 @@ import {
 import { toast } from "react-toastify";
 
 // List of pages from your model's enum
- const API_BASE_URL =
-   "https://dini-paradise-backend-akz8.onrender.com/api/images";
+const API_BASE_URL =
+  "https://dini-paradise-backend-akz8.onrender.com/api/images";
 // const API_BASE_URL = "http://localhost:5000/api/images";
 
 const getAuthToken = () => localStorage.getItem("adminToken");
@@ -26,7 +26,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6 transform transition-all duration-300 scale-100">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6 transform transition-all duration-300 scale-100 max-h-screen overflow-y-auto my-4">
         <div className="flex justify-between items-center pb-3 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
           <button
@@ -342,6 +342,20 @@ const GalleryManagerComponent = () => {
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
         />
       </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Image Alt Text
+        </label>
+        <input
+          type="text"
+          value={currentItem?.alt || ""}
+          onChange={(e) =>
+            setCurrentItem({ ...currentItem, alt: e.target.value })
+          }
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+        />
+      </div>
       {/* Image Details */}
       <fieldset className="border p-4 rounded-lg space-y-4">
         <legend className="text-sm font-semibold text-gray-700 px-1">
@@ -572,7 +586,14 @@ const GalleryManagerComponent = () => {
 
   let content;
   if (isLoading) {
-    content = <div className="text-center p-8">Loading gallery...</div>;
+    content = (
+      <div className="flex flex-col items-center justify-center py-4">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+        <span className="mt-2 text-sm font-semibold text-gray-700">
+          Loading Gallery
+        </span>
+      </div>
+    );
   } else if (error) {
     content = (
       <div className="text-center p-8 text-red-500">Error: {error}</div>
@@ -629,12 +650,12 @@ const GalleryManagerComponent = () => {
   return (
     <>
       <div className="p-4 sm:p-6 lg:p-8 bg-white rounded-xl shadow-lg h-full overflow-y-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">
           Gallery Management
         </h1>
         <button
           onClick={openCreateModal}
-          className="p-24 my-8 w-full sm:w-auto flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+          className="p-24 mb-8 w-full sm:w-auto flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
         >
           <Plus size={20} className="mr-2" />
           Add New Item

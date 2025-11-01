@@ -111,7 +111,14 @@ const AdminPanel = () => {
   ${isSidebarOpen || isMobileNavOpen ? "" : "justify-center"}`}
         >
           {isSidebarOpen || isMobileNavOpen ? (
-            <h1 className="text-xl font-bold tracking-wider">DINI ADMIN</h1>
+            <div className="py-4 pt-6">
+              <h1 className="text-xl  font-semibold tracking-wider">
+                DINI PARADISE
+              </h1>
+              <p className="block text-sm font-medium text-gray-400 mb-1">
+                Admin Panel
+              </p>
+            </div>
           ) : (
             <Menu className="fixed  w-6 h-6" />
           )}

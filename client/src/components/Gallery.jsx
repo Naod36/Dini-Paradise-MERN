@@ -9,6 +9,8 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 // The props `backgroundImage` and `rotationInterval` are kept, but `images` is removed.
 export default function Gallery({
@@ -26,6 +28,7 @@ export default function Gallery({
   const [tiltAngles, setTiltAngles] = useState({ rotateX: 0, rotateY: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const mainImageRef = useRef(null);
+  const navigate = useNavigate();
 
   // Fetch images from your API when the component mounts
   useEffect(() => {
@@ -98,7 +101,8 @@ export default function Gallery({
   // --- Conditional Rendering ---
   if (isLoading) {
     return (
-      <section className="relative flex min-h-screen w-full items-center justify-center bg-black">
+      <section className="relative flex flex-col min-h-screen w-full items-center justify-center bg-black">
+        <Loader2 className="w-24 h-24 animate-spin text-amber-600" />
         <p className="text-2xl text-white">Loading Gallery...</p>
       </section>
     );
@@ -411,6 +415,7 @@ export default function Gallery({
             className="text-center mt-12"
           >
             <motion.button
+              onClick={() => navigate("/itemMenu")}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl border border-amber-500/30"

@@ -11,6 +11,7 @@ import {
   Image,
   Upload,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 // The base URL for your menu item API, matching the backend configuration
 const API_BASE_URL =
@@ -272,6 +273,16 @@ const ItemMenuManager = () => {
         }
         throw new Error(errorMsg);
       }
+      const successMessage =
+        modalMode === "create"
+          ? `Menu Item "${currentItem.name}" successfully created!`
+          : `Menu Item "${currentItem.name}" successfully updated!`;
+
+      toast.success(successMessage);
+      setMessage({
+        type: "success",
+        content: "Menu Item updated successfully!",
+      });
 
       // Refetch data to update the table
       await fetchItems();
@@ -280,6 +291,7 @@ const ItemMenuManager = () => {
       console.error("Form Submit Error:", err);
       // Display the detailed error message caught above
       setError(`Operation failed: ${err.message}`);
+      toast.error(`Failed to save Menu item: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -313,6 +325,7 @@ const ItemMenuManager = () => {
         }
         throw new Error(errorMsg);
       }
+      toast.success(`Menu Item "${currentItem.name}" successfully deleted!`);
 
       // Refetch data to update the table
       await fetchItems();
@@ -320,6 +333,7 @@ const ItemMenuManager = () => {
     } catch (err) {
       console.error("Delete Error:", err);
       setError(`Deletion failed: ${err.message}`);
+      toast.error(`Failed to delete Menu item: ${err.message}`);
     } finally {
       setLoading(false);
     }

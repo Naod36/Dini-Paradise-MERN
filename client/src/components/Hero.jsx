@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { easeIn, motion } from "framer-motion";
 import ImageWithFallback from "./figma/ImageWithFallback";
 import smallLogo from "../assets/smallLogo.png";
 import BlurText from "./BlurText";
 import ShinyText from "./ShinyText";
 import GradualBlur from "./GradualBlur";
 import { useNavigate } from "react-router-dom";
+import { Upload, Loader2, Image } from "lucide-react";
 
 const API_URL =
   "https://dini-paradise-backend-akz8.onrender.com/api/site-assets";
@@ -89,8 +90,8 @@ function Hero() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[50vh] text-xl font-semibold text-gray-700 bg-gray-100">
-        Loading beautiful assets...
+      <div className="flex flex-col items-center justify-center py-4">
+        <Loader2 className="w-12 h-12 animate-spin text-amber-600" />
       </div>
     );
   }
@@ -175,6 +176,16 @@ function Hero() {
       height: rect.height,
     };
   };
+  const scrollToGallery = () => {
+    // 1. Get the target element by its ID
+    const galleryElement = document.getElementById("gallery-section");
+
+    // 2. Check if the element exists
+    if (galleryElement) {
+      // 3. Use scrollIntoView with smooth behavior
+      galleryElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-transparent">
@@ -183,9 +194,9 @@ function Hero() {
         <ImageWithFallback
           src={heroImages[currentIndex].url}
           alt={heroImages[currentIndex].alt}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover "
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
       </div>
 
       {/* Transition image */}
@@ -220,7 +231,7 @@ function Hero() {
             alt={heroImages[nextIndex].alt}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
         </motion.div>
       )}
 
@@ -361,7 +372,7 @@ function Hero() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="w-40 md:w-72 flex-shrink-0"
+            className="w-40 md:w-64 flex-shrink-0"
           >
             <img
               src={smallLogo}
@@ -374,11 +385,11 @@ function Hero() {
           <div className="flex flex-col items-center md:items-start">
             <BlurText
               text="Dini Paradise"
-              delay={250}
+              delay={500}
               animateBy="words"
               direction="bottom"
               onAnimationComplete={handleAnimationComplete}
-              className="text-3xl md:text-4xl lg:text-6xl mb-1 font-marhey font-semibold tracking-wide text-white drop-shadow-[5px_5px_10px_rgba(0,0,0,1)]"
+              className="text-3xl md:text-4xl lg:text-6xl  font-marhey font-semibold tracking-wide text-white drop-shadow-[5px_5px_10px_rgba(0,0,0,1)]"
             />
             {/* <motion.h2
               initial={{ opacity: 0 }}
@@ -393,7 +404,7 @@ function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 2.5 }}
-              className="text-lg md:text-2xl mb-6 text-white/90 max-w-2xl"
+              className="text-lg md:text-xl mb-6 text-white/90 max-w-xl"
               style={{ textShadow: "1px 1px 10px rgba(0,0,0,0.7)" }}
             >
               Where every moment feels special.
@@ -405,10 +416,10 @@ function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
             >
               <motion.button
-                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
+                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg backdrop-blur-sm"
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: "0 10px 30px rgba(245, 158, 11, 0.3)",
+                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
                 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate("/itemMenu")}
@@ -417,6 +428,7 @@ function Hero() {
               </motion.button>
 
               <motion.button
+                onClick={scrollToGallery}
                 className="border-2 border-white text-white  hover:bg-white hover:text-black px-8 py-3 rounded-full transition-all duration-300 backdrop-blur-sm"
                 whileHover={{
                   scale: 1.05,

@@ -58,12 +58,12 @@ function AdminLogin() {
                {" "}
         <div className="text-center mb-8">
                    {" "}
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
-                        DINI Admin          {" "}
+          <h1 className="text-2xl  font-extrabold text-gray-800 mb-2">
+            DINI PARADISE
           </h1>
                    {" "}
-          <p className="text-red-600 text-lg font-medium">Panel Access</p>     
-           {" "}
+          <p className="text-red-600 text-lg font-medium">Admin Panel Access</p>
+                 {" "}
         </div>
                {" "}
         <form onSubmit={handleLogin} className="space-y-6">

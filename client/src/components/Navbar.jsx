@@ -12,6 +12,7 @@ import {
 } from "./ui/resizable-navbar";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 export default function NavbarDemo() {
   const navItems = [
     {
@@ -24,7 +25,7 @@ export default function NavbarDemo() {
     },
     {
       name: "Gallery",
-      link: "/gallery",
+      link: "/#gallery-section",
     },
     {
       name: "Contact",
@@ -71,6 +72,7 @@ export default function NavbarDemo() {
               <a
                 key={`mobile-link-${idx}`}
                 href={item.link}
+                smooth
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative dark:text-neutral-300"
               >
