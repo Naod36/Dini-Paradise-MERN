@@ -1,6 +1,6 @@
 # Dini Paradise - Restaurant Landing Page
 
-#Demo dini-paradise-frontend.onrender.com 
+[Demo](dini-paradise-frontend.onrender.com)
 
 A beautiful restaurant landing page built with the MERN stack (MongoDB, Express.js, React, Node.js) and styled with Tailwind CSS.
 
